@@ -5,7 +5,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyOTP } from '@backend/services/otp.service'
-import { findUserByEmail, createUser } from '@/services/user.service'
+import { getUserByEmail, createUser } from '@backend/services/user.service'
 import { sign } from 'jsonwebtoken'
 
 const JWT_SECRET = process.env.AUTH_TOKEN_SECRET || 'your-secret-key'
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     // Handle based on purpose
     if (purpose === 'signup') {
       // Check if user already exists
-      const existingUser = await findUserByEmail(email)
+      const existingUser = await getUserByEmail(email)
       
       if (existingUser) {
         return NextResponse.json(
@@ -50,7 +50,6 @@ export async function POST(request: NextRequest) {
         email,
         name: name || email.split('@')[0],
         password: '', // No password needed for OTP auth
-        emailVerified: true, // Email is verified via OTP
       })
 
       // Generate JWT token
@@ -77,7 +76,7 @@ export async function POST(request: NextRequest) {
       })
     } else {
       // Login - find existing user
-      const user = await findUserByEmail(email)
+     const user = await getUserByEmail(email)
 
       if (!user) {
         return NextResponse.json(
@@ -104,7 +103,7 @@ export async function POST(request: NextRequest) {
           id: user.id,
           email: user.email,
           name: user.name,
-          emailVerified: user.emailVerified || true,
+          emailVerified: true,
         },
         token,
       })
