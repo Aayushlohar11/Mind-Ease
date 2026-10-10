@@ -94,10 +94,10 @@ const userSchema = new Schema<IUser>(
       resetTokenExpiry: { type: Date },
     },
   },
-  {
-    timestamps: true, // Adds createdAt and updatedAt
+    {
+    timestamps: true,
     toJSON: {
-      transform: function (doc, ret: any) { {
+      transform: function (_doc: any, ret: any) {
         delete ret.password
         delete ret.__v
         ret.id = ret._id
