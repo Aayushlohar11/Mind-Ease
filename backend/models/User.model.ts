@@ -14,7 +14,6 @@ export enum UserRole {
 
 // User interface
 export interface IUser extends Document {
-  _id: string
   name: string
   email: string
   password?: string // Optional for OTP-only auth
