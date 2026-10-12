@@ -15,18 +15,28 @@ function getResendClient(): Resend | null {
 
 // Lazy-load Nodemailer SMTP transport (e.g. Gmail App Password)
 function getSmtpTransporter() {
-  const user = process.env.SMTP_USER
-  const pass = process.env.SMTP_PASS
-  const host = process.env.SMTP_HOST || (user?.includes('@gmail.com') ? 'smtp.gmail.com' : undefined)
-  const port = parseInt(process.env.SMTP_PORT || '587')
+  const user = process.env.SMTP_USER?.trim()
+  // Clean all spaces/whitespace that often get copied into App Passwords (e.g. "abcd efgh ijkl mnop")
+  const pass = process.env.SMTP_PASS?.replace(/\s+/g, '').trim()
+  const host = process.env.SMTP_HOST?.trim() || (user?.includes('@gmail.com') ? 'smtp.gmail.com' : undefined)
+  const port = parseInt(process.env.SMTP_PORT?.trim() || '587')
 
-  if (!user || !pass || !host) {
+  if (!user || !pass) {
     return null
   }
 
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const nodemailer = require('nodemailer')
+    
+    // If it's a Gmail address, nodemailer's built-in service definition handles port/host/TLS reliably
+    if (user.includes('@gmail.com') || host === 'smtp.gmail.com') {
+      return nodemailer.createTransport({
+        service: 'gmail',
+        auth: { user, pass },
+      })
+    }
+
     return nodemailer.createTransport({
       host,
       port,
