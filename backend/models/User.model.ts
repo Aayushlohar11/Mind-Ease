@@ -115,8 +115,11 @@ userSchema.index({ adminId: 1 })
 userSchema.index({ createdAt: -1 })
 
 // Hash password before saving
-userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next()
+userSchema.pre('save', async function () {
+  if (!this.isModified('password')) return;
+
+  // Keep your existing password-hashing logic here.
+});
   
   if (this.password) {
     try {
