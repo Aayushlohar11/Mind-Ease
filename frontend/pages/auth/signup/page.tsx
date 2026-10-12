@@ -111,9 +111,17 @@ export default function SignupPage() {
         localStorage.setItem('user', JSON.stringify(data.user))
       }
 
-      // Redirect to dashboard
-      router.push('/dashboard')
-      router.refresh()
+      // Establish NextAuth session so middleware and dashboard recognize login
+      const { signIn } = await import('next-auth/react')
+      await signIn('credentials', {
+        redirect: false,
+        email: email.trim(),
+        otpToken: data.token || 'verified',
+        callbackUrl: '/dashboard',
+      })
+
+      // Full navigation to ensure session cookie is read
+      window.location.href = '/dashboard'
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred. Please try again.')
       setIsLoading(false)

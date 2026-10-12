@@ -29,19 +29,46 @@ export async function auth(request: NextRequest) {
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
+      id: 'credentials',
       name: 'Credentials',
       credentials: {
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
+        otpToken: { label: 'OTP Token', type: 'text' },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error('Email and password are required')
+        if (!credentials?.email) {
+          throw new Error('Email is required')
+        }
+
+        const email = credentials.email.trim().toLowerCase()
+
+        // 1. OTP Token Login (used right after successful OTP verification)
+        if (credentials.otpToken) {
+          const { getUserByEmail, createUser } = await import('@backend/services/user.service')
+          let user = await getUserByEmail(email)
+          if (!user) {
+            user = await createUser({
+              email,
+              name: email.split('@')[0],
+              password: '',
+            })
+          }
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+          }
+        }
+
+        // 2. Standard Password Login
+        if (!credentials.password) {
+          throw new Error('Password or verification token is required')
         }
 
         try {
           const authResponse = await login({
-            email: credentials.email.trim(),
+            email,
             password: credentials.password,
           })
 
