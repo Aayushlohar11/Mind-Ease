@@ -17,7 +17,7 @@ export function TypingIndicator({ className }: TypingIndicatorProps) {
   return (
     <div className={cn('flex w-full mb-4 justify-start', className)}>
       <div className="flex max-w-[80%] gap-3">
-        {/* Avatar — glass circle */}
+        {/* Avatar - glass circle */}
         <div
           className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
           style={{
@@ -30,7 +30,7 @@ export function TypingIndicator({ className }: TypingIndicatorProps) {
           AI
         </div>
 
-        {/* Typing Animation — glass bubble */}
+        {/* Typing Animation - glass bubble */}
         <div className="flex flex-col gap-1">
           <div
             className="rounded-2xl rounded-tl-md px-4 py-3"

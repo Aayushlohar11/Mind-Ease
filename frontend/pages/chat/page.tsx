@@ -2,7 +2,7 @@
 
 /**
  * AI Chat Page
- * Main page for AI-powered mental health support chat — macOS glassmorphism design
+ * Main page for AI-powered mental health support chat - macOS glassmorphism design
  */
 
 import { useState, useEffect } from 'react'
@@ -110,14 +110,14 @@ export default function ChatPage() {
   if (status === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <p className="font-mono text-sm text-muted-foreground">Loading chat…</p>
+        <p className="font-mono text-sm text-muted-foreground">Loading chat...</p>
       </div>
     )
   }
 
   return (
     <div className="h-screen flex flex-col bg-background portfolio-grid pt-16 relative overflow-hidden">
-      {/* Ambient glow orbs behind the glass — macOS vibrancy effect */}
+      {/* Ambient glow orbs behind the glass - macOS vibrancy effect */}
       <div
         className="pointer-events-none absolute top-20 left-1/4 w-96 h-96 rounded-full opacity-[0.12]"
         style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.8) 0%, transparent 70%)' }}
@@ -131,7 +131,7 @@ export default function ChatPage() {
         style={{ background: 'radial-gradient(circle, rgba(56,189,248,0.8) 0%, transparent 70%)' }}
       />
 
-      {/* Top bar — glass header */}
+      {/* Top bar - glass header */}
       <div
         className="relative z-10 px-6 py-4"
         style={{
@@ -143,7 +143,7 @@ export default function ChatPage() {
       >
         <div className="max-w-6xl mx-auto flex justify-between items-center">
           <div>
-            <p className="font-mono text-xs text-teal-400 mb-1">01 — Chat</p>
+            <p className="font-mono text-xs text-teal-400 mb-1">01 - Chat</p>
             <h1 className="text-xl font-bold font-[family-name:var(--font-display)]">
               AI Mental Health Support
             </h1>
@@ -151,7 +151,7 @@ export default function ChatPage() {
               Your MindEase space for emotional support
               {usingFallback && (
                 <span className="block text-amber-400/90 text-xs mt-1">
-                  Demo mode — add OPENAI_API_KEY in .env.local for full AI
+                  Demo mode - add OPENAI_API_KEY in .env.local for full AI
                 </span>
               )}
             </p>
@@ -173,7 +173,7 @@ export default function ChatPage() {
         </div>
       </div>
 
-      {/* Chat area — the main glass container */}
+      {/* Chat area - the main glass container */}
       <div className="flex-1 max-w-6xl w-full mx-auto p-4 min-h-0 relative z-10">
         <div
           className="h-full rounded-2xl overflow-hidden"

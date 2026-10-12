@@ -1,5 +1,5 @@
 /**
- * Database setup — runs initial migration SQL
+ * Database setup - runs initial migration SQL
  * Usage: npm run db:setup
  */
 

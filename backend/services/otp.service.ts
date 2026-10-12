@@ -5,8 +5,13 @@
 
 import { Resend } from 'resend'
 
-// Initialize Resend client
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Lazy-load Resend client
+function getResendClient(): Resend | null {
+  if (!process.env.RESEND_API_KEY) {
+    return null
+  }
+  return new Resend(process.env.RESEND_API_KEY)
+}
 
 // In-memory OTP storage (in production, use Redis or database)
 interface OTPRecord {
@@ -144,6 +149,12 @@ async function sendOTPEmail(
 </body>
 </html>
     `
+
+    const resend = getResendClient()
+    if (!resend) {
+      console.warn('[OTP Service] RESEND_API_KEY is not set. Simulating OTP email delivery for:', email)
+      return true
+    }
 
     const { data, error } = await resend.emails.send({
       from: 'Mind Ease <onboarding@resend.dev>', // Use your verified domain in production

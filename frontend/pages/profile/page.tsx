@@ -363,7 +363,7 @@ export default function ProfilePage() {
   if (status === 'loading' || isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <p className="font-mono text-sm text-muted-foreground">Loading profile…</p>
+        <p className="font-mono text-sm text-muted-foreground">Loading profile...</p>
       </div>
     )
   }
@@ -390,7 +390,7 @@ export default function ProfilePage() {
                 )}
               </div>
               <div>
-                <p className="font-mono text-xs text-teal-400 mb-1">05 — Profile</p>
+                <p className="font-mono text-xs text-teal-400 mb-1">05 - Profile</p>
                 <h1 className="font-[family-name:var(--font-display)] text-3xl font-bold tracking-tight">
                   Profile Settings
                 </h1>
@@ -477,7 +477,7 @@ export default function ProfilePage() {
                 className="w-full border-white/15 bg-transparent hover:bg-white/5 gap-2"
               >
                 <Download className="h-4 w-4" />
-                {savingSection === 'export' ? 'Preparing…' : 'Export data'}
+                {savingSection === 'export' ? 'Preparing...' : 'Export data'}
               </Button>
             </section>
 
@@ -504,7 +504,7 @@ export default function ProfilePage() {
                 className="w-full gap-2"
               >
                 <Trash2 className="h-4 w-4" />
-                {savingSection === 'delete' ? 'Deleting…' : 'Delete account'}
+                {savingSection === 'delete' ? 'Deleting...' : 'Delete account'}
               </Button>
             </section>
           </aside>
@@ -794,7 +794,7 @@ function SaveButton({
     <div className="mt-6 flex justify-end">
       <Button onClick={onClick} disabled={loading} className="gap-2">
         <Save className="h-4 w-4" />
-        {loading ? 'Saving…' : label}
+        {loading ? 'Saving...' : label}
       </Button>
     </div>
   )

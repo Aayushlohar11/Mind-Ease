@@ -2,7 +2,7 @@
 
 /**
  * Analytics Page
- * Displays comprehensive analytics and insights — macOS glassmorphism theme matching mood page
+ * Displays comprehensive analytics and insights - macOS glassmorphism theme matching mood page
  */
 
 import { useState, useEffect } from 'react'
@@ -63,7 +63,7 @@ export default function AnalyticsPage() {
   if (status === 'loading' || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <p className="font-mono text-sm text-muted-foreground">Loading analytics…</p>
+        <p className="font-mono text-sm text-muted-foreground">Loading analytics...</p>
       </div>
     )
   }
@@ -114,7 +114,7 @@ export default function AnalyticsPage() {
 
   return (
     <div className="min-h-screen bg-background portfolio-grid pt-16 relative overflow-hidden">
-      {/* Ambient glow orbs — macOS vibrancy */}
+      {/* Ambient glow orbs - macOS vibrancy */}
       <div
         className="pointer-events-none fixed top-32 left-[15%] w-[500px] h-[500px] rounded-full opacity-[0.10]"
         style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.8) 0%, transparent 70%)' }}
@@ -129,7 +129,7 @@ export default function AnalyticsPage() {
       />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-6 space-y-6">
-        {/* Header — glass bar */}
+        {/* Header - glass bar */}
         <div
           className="flex justify-between items-center rounded-2xl px-6 py-5"
           style={{
@@ -141,7 +141,7 @@ export default function AnalyticsPage() {
           }}
         >
           <div>
-            <p className="font-mono text-xs text-teal-400 mb-1">03 — Analytics</p>
+            <p className="font-mono text-xs text-teal-400 mb-1">03 - Analytics</p>
             <h1 className="text-2xl font-bold" style={{ color: 'rgba(255,255,255,0.92)' }}>
               Analytics & Insights
             </h1>
@@ -616,7 +616,8 @@ export default function AnalyticsPage() {
                                insight.type === 'trigger_identified'
                                 ? '1px solid rgba(234,179,8,0.3)'
                               : '1px solid rgba(59,130,246,0.3)',
-                                 >
+                            }}
+                          >
                             <Sparkles className="h-3.5 w-3.5" style={{
                             color:insight.type === 'mood_improvement' ||
                              insight.type === 'activity_effective'
@@ -629,11 +630,11 @@ export default function AnalyticsPage() {
                           </div>
                           <div className="flex-1">
                             <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                              {insight.message}
+                              {(insight as any).message || insight.description || insight.title}
                             </p>
-                            {insight.recommendation && (
+                            {((insight as any).recommendation || insight.recommendations?.[0]) && (
                               <p className="text-xs mt-2 italic" style={{ color: 'rgba(255,255,255,0.4)' }}>
-                                💡 {insight.recommendation}
+                                💡 {(insight as any).recommendation || insight.recommendations?.[0]}
                               </p>
                             )}
                           </div>

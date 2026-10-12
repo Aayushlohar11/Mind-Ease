@@ -4,7 +4,7 @@
  */
 
 import { db, query } from '@/lib/database'
-import type { User, UserProfile, UserPreferences } from '@/types/user'
+import type { User, UserProfile, UserPreferences } from '@backend/types/user'
 
 /**
  * Get user by ID

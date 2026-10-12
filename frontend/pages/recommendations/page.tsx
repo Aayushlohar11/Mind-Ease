@@ -253,7 +253,7 @@ export default function RecommendationsPage() {
                 <Compass className="h-8 w-8 text-teal-200" />
               </div>
               <div>
-                <p className="font-mono text-xs text-teal-400 mb-1">04 — Resources</p>
+                <p className="font-mono text-xs text-teal-400 mb-1">04 - Resources</p>
                 <h1 className="font-[family-name:var(--font-display)] text-3xl font-bold tracking-tight">
                   Resource Library
                 </h1>

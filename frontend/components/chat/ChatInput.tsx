@@ -123,7 +123,7 @@ export function ChatInput({
           aria-label="Chat message input"
         />
 
-        {/* Send Button — glass orb */}
+        {/* Send Button - glass orb */}
         <button
           type="submit"
           disabled={!isMessageValid || isLoading || disabled}

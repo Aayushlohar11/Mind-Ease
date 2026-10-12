@@ -2,7 +2,7 @@
  * Application environment configuration
  *
  * Next.js loads these automatically from:
- *   1. .env.local   ← ADD YOUR API KEYS HERE (recommended)
+ *   1. .env.local   <- ADD YOUR API KEYS HERE (recommended)
  *   2. .env
  *
  * First-time setup: npm run setup:env
@@ -19,13 +19,13 @@ const PLACEHOLDER_KEY_PATTERNS = [
 export const env = {
   nodeEnv: process.env.NODE_ENV ?? 'development',
 
-  /** OpenAI — powers AI chat at /chat */
+  /** OpenAI - powers AI chat at /chat */
   openai: {
     apiKey: process.env.OPENAI_API_KEY?.trim() ?? '',
     model: process.env.OPENAI_MODEL?.trim() || 'gpt-4o-mini',
   },
 
-  /** NextAuth — login / signup / sessions */
+  /** NextAuth - login / signup / sessions */
   nextAuth: {
     url: process.env.NEXTAUTH_URL?.trim() || 'http://localhost:3000',
     secret: process.env.NEXTAUTH_SECRET?.trim() ?? '',

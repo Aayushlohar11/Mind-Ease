@@ -3,7 +3,7 @@ import Link from 'next/link'
 interface AuthLayoutProps {
   children: React.ReactNode
   title: string
-  subtitle: string
+  subtitle: React.ReactNode
 }
 
 export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
@@ -21,7 +21,7 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
               Your journey to better mental health starts here.
             </h1>
             <p className="text-muted-foreground text-lg max-w-md">
-              AI-powered support, mood insights, and personalized resources — designed with care.
+              AI-powered support, mood insights, and personalized resources - designed with care.
             </p>
           </div>
           <div className="flex gap-8 text-sm text-muted-foreground">

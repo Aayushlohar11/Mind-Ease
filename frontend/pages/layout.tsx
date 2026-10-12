@@ -17,7 +17,7 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'MindEase — AI Mental Health Platform',
+  title: 'MindEase - AI Mental Health Platform',
   description:
     'Portfolio-grade mental wellness app with AI chat, mood tracking, and personalized insights.',
 }

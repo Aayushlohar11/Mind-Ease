@@ -277,7 +277,7 @@ function createAIError(
  */
 function validateApiKey(): void {
   if (!env.openai.apiKey) {
-    throw new Error('OpenAI API key is not configured — add OPENAI_API_KEY to .env.local')
+    throw new Error('OpenAI API key is not configured - add OPENAI_API_KEY to .env.local')
   }
 }
 
@@ -456,7 +456,7 @@ export async function generateChatResponse(
     // Use local fallback when OpenAI API key is not configured
     if (!isOpenAIConfigured()) {
       console.warn(
-        '[ai-chat] OpenAI API key not configured — using development fallback responses. Set OPENAI_API_KEY in .env for real AI replies.'
+        '[ai-chat] OpenAI API key not configured - using development fallback responses. Set OPENAI_API_KEY in .env for real AI replies.'
       )
       return {
         success: true,

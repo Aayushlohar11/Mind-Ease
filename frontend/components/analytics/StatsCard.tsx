@@ -23,7 +23,7 @@ export function StatsCard({ title, value, icon, trend = 'neutral', subtitle }: S
       case 'down':
         return '↘️'
       default:
-        return '→'
+        return '->'
     }
   }
 

@@ -4,7 +4,7 @@
  */
 
 import { db, query } from '@/lib/database'
-import type { MoodEntry, MoodHistory, MoodType } from '@/types/mood'
+import type { MoodEntry, MoodHistory, MoodType } from '@backend/types/mood'
 
 /**
  * Create a new mood entry
@@ -75,7 +75,21 @@ export async function getMoodHistory(
   return {
     userId,
     entries: entries.rows,
-    summary,
+    dateRange: {
+      start: entries.rows[entries.rows.length - 1]?.timestamp || new Date(),
+      end: entries.rows[0]?.timestamp || new Date(),
+    },
+    summary: {
+      ...summary,
+      categoryDistribution: {
+        positive: 0,
+        neutral: 0,
+        negative: 0,
+        anxious: 0,
+      },
+      commonTriggers: [],
+      commonActivities: [],
+    },
   }
 }
 

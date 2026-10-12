@@ -205,7 +205,7 @@ export default function MoodPage() {
                 <Activity className="h-7 w-7 text-teal-200" />
               </div>
               <div>
-                <p className="font-mono text-xs text-teal-400 mb-1">02 — Mood</p>
+                <p className="font-mono text-xs text-teal-400 mb-1">02 - Mood</p>
                 <h1 className="font-[family-name:var(--font-display)] text-3xl font-bold tracking-tight">
                   Mood Studio
                 </h1>

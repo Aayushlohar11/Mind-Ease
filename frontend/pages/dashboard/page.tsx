@@ -61,7 +61,7 @@ export default function DashboardPage() {
   if (status === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <p className="text-muted-foreground font-mono text-sm">Loading workspace…</p>
+        <p className="text-muted-foreground font-mono text-sm">Loading workspace...</p>
       </div>
     )
   }
@@ -99,7 +99,7 @@ export default function DashboardPage() {
             <p className="text-lg font-medium text-teal-400">All systems ready</p>
           </div>
           <p className="text-xs font-mono text-muted-foreground hidden sm:block">
-            ID: {session.user?.id?.slice(0, 20)}…
+            ID: {session.user?.id?.slice(0, 20)}...
           </p>
         </div>
 

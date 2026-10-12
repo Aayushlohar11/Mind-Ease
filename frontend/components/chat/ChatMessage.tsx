@@ -33,7 +33,7 @@ export function ChatMessage({ message, isLoading = false }: ChatMessageProps) {
       )}
     >
       <div className={cn('flex max-w-[80%] gap-3', isUser ? 'flex-row-reverse' : 'flex-row')}>
-        {/* Avatar — glass circle */}
+        {/* Avatar - glass circle */}
         <div
           className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
           style={{
@@ -50,7 +50,7 @@ export function ChatMessage({ message, isLoading = false }: ChatMessageProps) {
           {isUser ? 'U' : 'AI'}
         </div>
 
-        {/* Message Content — glass bubble */}
+        {/* Message Content - glass bubble */}
         <div className="flex flex-col gap-1">
           <div
             className={cn(
@@ -111,7 +111,7 @@ export function ChatMessage({ message, isLoading = false }: ChatMessageProps) {
             {message.status === 'sending' && <span style={{ color: 'rgba(255,255,255,0.2)' }}>Sending...</span>}
           </div>
 
-          {/* Sentiment Indicator (optional) — glass pill */}
+          {/* Sentiment Indicator (optional) - glass pill */}
           {message.sentiment && isUser && (
             <div className={cn('px-2 text-xs', isUser ? 'text-right' : 'text-left')}>
               <span

@@ -42,7 +42,7 @@ export default function AuthErrorPage() {
     <Suspense
       fallback={
         <div className="min-h-screen flex items-center justify-center bg-background">
-          <p className="font-mono text-sm text-muted-foreground">Loading…</p>
+          <p className="font-mono text-sm text-muted-foreground">Loading...</p>
         </div>
       }
     >

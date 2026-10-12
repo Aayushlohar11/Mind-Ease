@@ -4,7 +4,7 @@
  */
 
 import { db, query, transaction } from '@/lib/database'
-import type { Message, ChatSession } from '@/types/message'
+import type { Message, ChatSession } from '@backend/types/message'
 
 /**
  * Create a new chat session

@@ -3,7 +3,7 @@
  * PostgreSQL database connection pool and query utilities
  */
 
-import { Pool, PoolClient, QueryResult } from 'pg'
+import { Pool, PoolClient, QueryResult, QueryResultRow } from 'pg'
 
 // Database configuration
 const dbConfig = {
@@ -44,7 +44,7 @@ export function getPool(): Pool {
 /**
  * Execute a query with parameters
  */
-export async function query<T = any>(
+export async function query<T extends QueryResultRow = any>(
   text: string,
   params?: any[]
 ): Promise<QueryResult<T>> {
@@ -165,7 +165,7 @@ export const db = {
   /**
    * Select query helper
    */
-  select: async <T = any>(
+  select: async <T extends QueryResultRow = any>(
     table: string,
     columns: string[] = ['*'],
     where?: { [key: string]: any },
@@ -199,7 +199,7 @@ export const db = {
   /**
    * Insert query helper
    */
-  insert: async <T = any>(
+  insert: async <T extends QueryResultRow = any>(
     table: string,
     data: { [key: string]: any }
   ): Promise<T> => {
@@ -220,7 +220,7 @@ export const db = {
   /**
    * Update query helper
    */
-  update: async <T = any>(
+  update: async <T extends QueryResultRow = any>(
     table: string,
     data: { [key: string]: any },
     where: { [key: string]: any }

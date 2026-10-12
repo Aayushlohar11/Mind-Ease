@@ -67,7 +67,7 @@ export function ChatContainer({
         WebkitBackdropFilter: 'blur(40px) saturate(180%)',
       }}
     >
-      {/* macOS-style Chat Header — frosted glass bar */}
+      {/* macOS-style Chat Header - frosted glass bar */}
       <div
         className="flex items-center gap-3 px-5 py-3.5 relative"
         style={{
@@ -117,7 +117,7 @@ export function ChatContainer({
         </div>
       </div>
 
-      {/* Messages Area — glass scrollable region */}
+      {/* Messages Area - glass scrollable region */}
       <div
         ref={messagesContainerRef}
         onScroll={handleScroll}
@@ -127,7 +127,7 @@ export function ChatContainer({
           scrollbarColor: 'rgba(255,255,255,0.15) transparent',
         }}
       >
-        {/* Welcome Message — macOS-style glass card */}
+        {/* Welcome Message - macOS-style glass card */}
         {showWelcome && !hasMessages && (
           <div
             className="p-6 rounded-2xl relative overflow-hidden"
@@ -185,7 +185,7 @@ export function ChatContainer({
           </div>
         )}
 
-        {/* Error Message — glass error card */}
+        {/* Error Message - glass error card */}
         {error && (
           <div
             className="p-4 rounded-xl"
@@ -222,7 +222,7 @@ export function ChatContainer({
       {/* Input Area */}
       <ChatInput onSendMessage={onSendMessage} isLoading={isLoading} disabled={isLoading} />
 
-      {/* Scroll to Bottom Button — glass floating button */}
+      {/* Scroll to Bottom Button - glass floating button */}
       {!shouldAutoScroll && (
         <button
           onClick={() => {

@@ -145,7 +145,7 @@ export default function SignupPage() {
     return (
       <AuthLayout
         title="Create account"
-        subtitle="Join Mind Ease — your AI mental health companion"
+        subtitle="Join Mind Ease - your AI mental health companion"
       >
         <form onSubmit={handleSendOTP} className="space-y-4">
           <div className="space-y-2">

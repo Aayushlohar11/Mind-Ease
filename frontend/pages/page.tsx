@@ -18,7 +18,7 @@ const projects = [
     title: 'Mood Tracker',
     tag: 'Wellness',
     description:
-      'Log daily moods, intensity, triggers, and notes — then visualize patterns over weeks and months.',
+      'Log daily moods, intensity, triggers, and notes - then visualize patterns over weeks and months.',
     href: '/auth/signup',
     icon: LineChart,
     accent: 'from-violet-500/20 to-purple-500/5',
@@ -36,7 +36,7 @@ const projects = [
     title: 'Smart Resources',
     tag: 'Recommendations',
     description:
-      'Content recommendations tailored to how you feel — exercises, articles, and guided practices.',
+      'Content recommendations tailored to how you feel - exercises, articles, and guided practices.',
     href: '/auth/signup',
     icon: Brain,
     accent: 'from-rose-500/20 to-pink-500/5',
@@ -55,14 +55,14 @@ export default function Home() {
       <main className="pt-16">
         {/* Hero */}
         <section className="max-w-6xl mx-auto px-4 sm:px-6 py-24 md:py-32">
-          <p className="font-mono text-sm text-teal-400 mb-6 animate-fade-in">Hi, welcome to —</p>
+          <p className="font-mono text-sm text-teal-400 mb-6 animate-fade-in">Hi, welcome to -</p>
           <h1 className="font-[family-name:var(--font-display)] text-5xl sm:text-6xl md:text-7xl font-bold leading-[1.05] tracking-tight mb-6">
             <span className="text-gradient">MindEase</span>
             <br />
             <span className="text-foreground/90">Mental wellness, reimagined.</span>
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-10 leading-relaxed">
-            A full-stack mental health platform — AI chat, mood tracking, analytics, and
+            A full-stack mental health platform - AI chat, mood tracking, analytics, and
             personalized resources. Built like a portfolio piece: thoughtful design, modern stack,
             real features.
           </p>
@@ -104,9 +104,9 @@ export default function Home() {
           className="max-w-6xl mx-auto px-4 sm:px-6 py-20 border-t border-white/10"
         >
           <SectionHeader
-            number="01 — About"
+            number="01 - About"
             title="What is MindEase?"
-            subtitle="More than an app — a complete mental wellness experience with production-ready auth, APIs, and a polished interface."
+            subtitle="More than an app - a complete mental wellness experience with production-ready auth, APIs, and a polished interface."
           />
           <div className="grid md:grid-cols-2 gap-6">
             <div className="card-portfolio p-8">
@@ -134,9 +134,9 @@ export default function Home() {
           className="max-w-6xl mx-auto px-4 sm:px-6 py-20 border-t border-white/10"
         >
           <SectionHeader
-            number="02 — Selected work"
+            number="02 - Selected work"
             title="Platform features"
-            subtitle="Explore the core modules — each designed as a distinct product experience."
+            subtitle="Explore the core modules - each designed as a distinct product experience."
           />
           <div className="grid md:grid-cols-2 gap-6">
             {projects.map((project) => (
@@ -167,7 +167,7 @@ export default function Home() {
           className="max-w-6xl mx-auto px-4 sm:px-6 py-20 border-t border-white/10"
         >
           <SectionHeader
-            number="03 — Get in touch"
+            number="03 - Get in touch"
             title="Ready to explore?"
             subtitle="Create a free account and access every feature from your personal dashboard."
           />
@@ -178,7 +178,7 @@ export default function Home() {
                 Start building your wellness story
               </h3>
               <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
-                Join MindEase today — no credit card, no complexity. Just sign up and begin.
+                Join MindEase today - no credit card, no complexity. Just sign up and begin.
               </p>
               <Link href="/auth/signup">
                 <Button
