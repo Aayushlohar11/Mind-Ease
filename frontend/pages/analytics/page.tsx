@@ -601,11 +601,14 @@ export default function AnalyticsPage() {
                           <div
                             className="flex items-center justify-center w-6 h-6 rounded-lg flex-shrink-0 mt-0.5"
                             style={{
-                              background: insight.type === 'positive'
-                                ? 'rgba(34,197,94,0.2)'
-                                : insight.type === 'warning'
-                                ? 'rgba(234,179,8,0.2)'
-                                : 'rgba(59,130,246,0.2)',
+                              background:
+  insight.type === 'mood_improvement' ||
+  insight.type === 'activity_effective'
+    ? 'rgba(34,197,94,0.2)'
+    : insight.type === 'risk_alert' ||
+      insight.type === 'trigger_identified'
+    ? 'rgba(234,179,8,0.2)'
+    : 'rgba(59,130,246,0.2)',
                               border: insight.type === 'positive'
                                 ? '1px solid rgba(34,197,94,0.3)'
                                 : insight.type === 'warning'
