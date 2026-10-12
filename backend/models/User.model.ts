@@ -118,17 +118,11 @@ userSchema.index({ createdAt: -1 })
 userSchema.pre('save', async function () {
   if (!this.isModified('password')) return;
 
-  // Keep your existing password-hashing logic here.
-});
-  
   if (this.password) {
-    try {
-      const salt = await bcrypt.genSalt(10)
-      this.password = await bcrypt.hash(this.password, salt)
-    } catch (error) {
-      return next(error as Error)
-    }
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
   }
+});
   
   next()
 })
