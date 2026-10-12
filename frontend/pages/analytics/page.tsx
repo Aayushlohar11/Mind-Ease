@@ -602,26 +602,29 @@ export default function AnalyticsPage() {
                             className="flex items-center justify-center w-6 h-6 rounded-lg flex-shrink-0 mt-0.5"
                             style={{
                               background:
-  insight.type === 'mood_improvement' ||
-  insight.type === 'activity_effective'
-    ? 'rgba(34,197,94,0.2)'
-    : insight.type === 'risk_alert' ||
-      insight.type === 'trigger_identified'
-    ? 'rgba(234,179,8,0.2)'
-    : 'rgba(59,130,246,0.2)',
-                              border: insight.type === 'positive'
-                                ? '1px solid rgba(34,197,94,0.3)'
-                                : insight.type === 'warning'
+                             insight.type === 'mood_improvement' ||
+                             insight.type === 'activity_effective'
+                              ? 'rgba(34,197,94,0.2)'
+                              : insight.type === 'risk_alert' ||
+                                insight.type === 'trigger_identified'
+                              ? 'rgba(234,179,8,0.2)'
+                              : 'rgba(59,130,246,0.2)',
+                              border:insight.type === 'mood_improvement' ||
+                              insight.type === 'activity_effective'
+                               ? '1px solid rgba(34,197,94,0.3)'
+                               : insight.type === 'risk_alert' ||
+                               insight.type === 'trigger_identified'
                                 ? '1px solid rgba(234,179,8,0.3)'
-                                : '1px solid rgba(59,130,246,0.3)',
-                            }}
-                          >
+                              : '1px solid rgba(59,130,246,0.3)',
+                                 >
                             <Sparkles className="h-3.5 w-3.5" style={{
-                              color: insight.type === 'positive'
-                                ? 'rgba(74,222,128,0.9)'
-                                : insight.type === 'warning'
-                                ? 'rgba(250,204,21,0.9)'
-                                : 'rgba(96,165,250,0.9)',
+                            color:insight.type === 'mood_improvement' ||
+                             insight.type === 'activity_effective'
+                            ? 'rgba(74,222,128,0.9)'
+                             : insight.type === 'risk_alert' ||
+                             insight.type === 'trigger_identified'
+                             ? 'rgba(250,204,21,0.9)'
+                             : 'rgba(96,165,250,0.9)',
                             }} />
                           </div>
                           <div className="flex-1">
