@@ -2,10 +2,15 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  // Transpile files outside the root (frontend/, backend/) so Vercel can build them
+  transpilePackages: [],
   experimental: {
-    externalDir: true,
     serverActions: {
-      allowedOrigins: ['localhost:3000'],
+      // Allow localhost in dev + any Vercel domain in production
+      allowedOrigins: [
+        'localhost:3000',
+        '*.vercel.app',
+      ],
     },
   },
 }
