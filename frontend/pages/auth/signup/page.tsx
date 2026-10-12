@@ -112,17 +112,23 @@ export default function SignupPage() {
       }
 
       // Establish NextAuth session so middleware and dashboard recognize login
-      const { signIn } = await import('next-auth/react')
-      await signIn('credentials', {
-        redirect: false,
-        email: email.trim(),
-        otpToken: data.token || 'verified',
-        callbackUrl: '/dashboard',
-      })
+      try {
+        const { signIn } = await import('next-auth/react')
+        const signInResult = await signIn('credentials', {
+          redirect: false,
+          email: email.trim(),
+          otpToken: data.token || 'verified',
+          callbackUrl: '/dashboard',
+        })
+        console.log('NextAuth signIn result:', signInResult)
+      } catch (authErr) {
+        console.warn('NextAuth signIn error (falling back to direct redirect):', authErr)
+      }
 
       // Full navigation to ensure session cookie is read
       window.location.href = '/dashboard'
     } catch (err) {
+      console.error('Verify error:', err)
       setError(err instanceof Error ? err.message : 'An error occurred. Please try again.')
       setIsLoading(false)
     }

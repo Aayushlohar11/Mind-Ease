@@ -13,12 +13,13 @@ import {
 } from '@backend/services/ai-chat.service'
 import { analyzeSentiment } from '@backend/services/sentiment.service'
 import type { Message } from '@backend/types/message'
+import { auth } from '@backend/lib/auth'
 
 export async function POST(request: NextRequest) {
   try {
     // Verify authentication
-    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET })
-    if (!token) {
+    const session = await auth(request)
+    if (!session?.user) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 

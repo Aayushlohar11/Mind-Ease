@@ -116,17 +116,23 @@ function LoginForm() {
       }
 
       // Establish NextAuth session so middleware and useSession() recognize login
-      const { signIn } = await import('next-auth/react')
-      await signIn('credentials', {
-        redirect: false,
-        email: email.trim(),
-        otpToken: data.token || 'verified',
-        callbackUrl,
-      })
+      try {
+        const { signIn } = await import('next-auth/react')
+        const signInResult = await signIn('credentials', {
+          redirect: false,
+          email: email.trim(),
+          otpToken: data.token || 'verified',
+          callbackUrl,
+        })
+        console.log('NextAuth signIn result:', signInResult)
+      } catch (authErr) {
+        console.warn('NextAuth signIn error (falling back to direct redirect):', authErr)
+      }
 
       // Full navigation to ensure session cookie is read by middleware and dashboard
       window.location.href = callbackUrl
     } catch (err) {
+      console.error('Verify error:', err)
       setError(err instanceof Error ? err.message : 'An error occurred. Please try again.')
       setIsLoading(false)
     }

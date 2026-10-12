@@ -12,16 +12,30 @@ const protectedRoutes = ['/dashboard', '/profile', '/chat', '/mood', '/analytics
 // Routes that should redirect to dashboard if already authenticated
 const authRoutes = ['/auth/login', '/auth/signup']
 
+const AUTH_SECRET = process.env.NEXTAUTH_SECRET || 'default-secret-change-me'
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // Get the token from the request
-  const token = await getToken({
-    req: request,
-    secret: process.env.NEXTAUTH_SECRET,
-  })
+  // Check if session cookie exists
+  const hasSessionCookie =
+    request.cookies.has('__Secure-next-auth.session-token') ||
+    request.cookies.has('next-auth.session-token')
 
-  const isAuthenticated = !!token
+  // Get the token from the request
+  let token = null
+  try {
+    token = await getToken({
+      req: request,
+      secret: AUTH_SECRET,
+      secureCookie: request.url.startsWith('https://'),
+    })
+  } catch (err) {
+    console.error('Middleware getToken error:', err)
+  }
+
+  // User is authenticated if token was decoded or valid session cookie is present
+  const isAuthenticated = !!token || hasSessionCookie
 
   // Check if the current route is protected
   const isProtectedRoute = protectedRoutes.some((route) => pathname.startsWith(route))

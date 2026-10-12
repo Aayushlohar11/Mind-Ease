@@ -4,7 +4,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { getToken } from 'next-auth/jwt'
+import { auth } from '@backend/lib/auth'
 import {
   createMoodEntry,
   deleteMoodEntry,
@@ -21,12 +21,12 @@ import type { MoodEntryInput } from '@backend/types/mood'
 export async function GET(request: NextRequest) {
   try {
     // Verify authentication
-    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET })
-    if (!token) {
+    const session = await auth(request)
+    if (!session?.user?.id) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const userId = token.id as string
+    const userId = session.user.id
     const { searchParams } = new URL(request.url)
 
     // Parse date range if provided
@@ -84,12 +84,12 @@ export async function GET(request: NextRequest) {
  */
 export async function PATCH(request: NextRequest) {
   try {
-    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET })
-    if (!token) {
+    const session = await auth(request)
+    if (!session?.user?.id) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const userId = token.id as string
+    const userId = session.user.id
     const body: Partial<MoodEntryInput> & { id?: string } = await request.json()
 
     if (!body.id) {
@@ -135,12 +135,12 @@ export async function PATCH(request: NextRequest) {
  */
 export async function DELETE(request: NextRequest) {
   try {
-    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET })
-    if (!token) {
+    const session = await auth(request)
+    if (!session?.user?.id) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const userId = token.id as string
+    const userId = session.user.id
     const { searchParams } = new URL(request.url)
     const entryId = searchParams.get('id')
 
@@ -178,12 +178,12 @@ export async function DELETE(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     // Verify authentication
-    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET })
-    if (!token) {
+    const session = await auth(request)
+    if (!session?.user?.id) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const userId = token.id as string
+    const userId = session.user.id
     const body: MoodEntryInput = await request.json()
 
     // Validate input
