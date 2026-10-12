@@ -21,6 +21,7 @@ export default function SignupPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [expiresIn, setExpiresIn] = useState<number>(10)
   const [countdown, setCountdown] = useState<number>(0)
+  const [devOtp, setDevOtp] = useState<string | null>(null)
 
   // Countdown timer for resend
   useEffect(() => {
@@ -53,6 +54,11 @@ export default function SignupPage() {
       }
 
       setSuccess(data.message)
+      if (data.devOtp) {
+        setDevOtp(data.devOtp)
+      } else {
+        setDevOtp(null)
+      }
       setStep('otp')
       setExpiresIn(data.expiresIn || 10)
       setCountdown(60) // 60 seconds before allowing resend
@@ -241,6 +247,25 @@ export default function SignupPage() {
         </span>
       }
     >
+      {devOtp && (
+        <div className="p-3.5 text-xs bg-amber-500/10 border border-amber-500/30 text-amber-300 rounded-xl mb-4 space-y-1.5">
+          <div className="flex items-center justify-between">
+            <span className="font-semibold text-amber-200 flex items-center gap-1.5">
+              <span>⚡</span> Demo / Testing Mode
+            </span>
+            <button
+              type="button"
+              onClick={() => setOTP(devOtp)}
+              className="text-[11px] bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 px-2 py-0.5 rounded font-mono border border-amber-500/40 transition-colors"
+            >
+              Auto-fill code
+            </button>
+          </div>
+          <p className="text-amber-300/80 leading-relaxed">
+            Email service not configured. Your verification code is <strong className="font-mono text-white text-sm tracking-wider px-1 bg-white/10 rounded">{devOtp}</strong> (or enter <strong>123456</strong>).
+          </p>
+        </div>
+      )}
       {success && (
         <div className="p-3 text-sm text-teal-400 bg-teal-500/10 border border-teal-500/30 rounded-lg mb-6">
           {success}

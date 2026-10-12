@@ -41,6 +41,7 @@ export async function POST(request: NextRequest) {
       success: true,
       message: result.message,
       expiresIn: result.expiresIn,
+      devOtp: result.devOtp,
     })
   } catch (error: any) {
     console.error('[API] Error sending OTP:', error)

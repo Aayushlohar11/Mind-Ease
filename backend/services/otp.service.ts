@@ -1,6 +1,6 @@
 /**
  * OTP Service
- * Handles OTP generation, storage, validation, and email sending
+ * Handles OTP generation, storage, validation, and email sending via Resend or Nodemailer SMTP
  */
 
 import { Resend } from 'resend'
@@ -13,7 +13,33 @@ function getResendClient(): Resend | null {
   return new Resend(process.env.RESEND_API_KEY)
 }
 
-// In-memory OTP storage (in production, use Redis or database)
+// Lazy-load Nodemailer SMTP transport (e.g. Gmail App Password)
+function getSmtpTransporter() {
+  const user = process.env.SMTP_USER
+  const pass = process.env.SMTP_PASS
+  const host = process.env.SMTP_HOST || (user?.includes('@gmail.com') ? 'smtp.gmail.com' : undefined)
+  const port = parseInt(process.env.SMTP_PORT || '587')
+
+  if (!user || !pass || !host) {
+    return null
+  }
+
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const nodemailer = require('nodemailer')
+    return nodemailer.createTransport({
+      host,
+      port,
+      secure: port === 465,
+      auth: { user, pass },
+    })
+  } catch (err) {
+    console.error('[OTP Service] Failed to initialize Nodemailer:', err)
+    return null
+  }
+}
+
+// In-memory OTP storage persisted on globalThis across hot-reloads
 interface OTPRecord {
   code: string
   email: string
@@ -22,16 +48,22 @@ interface OTPRecord {
   purpose: 'login' | 'signup' | 'verification'
 }
 
-const otpStore = new Map<string, OTPRecord>()
+const globalStore = globalThis as typeof globalThis & {
+  __mindeaseOtpStore?: Map<string, OTPRecord>
+  __mindeaseRateLimitStore?: Map<string, Date>
+}
+
+const otpStore = globalStore.__mindeaseOtpStore ?? new Map<string, OTPRecord>()
+const rateLimitStore = globalStore.__mindeaseRateLimitStore ?? new Map<string, Date>()
+
+globalStore.__mindeaseOtpStore = otpStore
+globalStore.__mindeaseRateLimitStore = rateLimitStore
 
 // Configuration
 const OTP_LENGTH = 6
 const OTP_EXPIRY_MINUTES = 10
 const MAX_ATTEMPTS = 5
 const RATE_LIMIT_MINUTES = 1 // Minimum time between OTP requests
-
-// Rate limiting storage
-const rateLimitStore = new Map<string, Date>()
 
 /**
  * Generate a random OTP code
@@ -49,7 +81,7 @@ function generateOTP(): string {
  * Check if email is rate limited
  */
 function isRateLimited(email: string): boolean {
-  const lastRequest = rateLimitStore.get(email)
+  const lastRequest = rateLimitStore.get(email.toLowerCase())
   if (!lastRequest) return false
 
   const now = new Date()
@@ -59,13 +91,13 @@ function isRateLimited(email: string): boolean {
 }
 
 /**
- * Send OTP email via Resend
+ * Send OTP email via Nodemailer SMTP or Resend
  */
 async function sendOTPEmail(
   email: string,
   otp: string,
   purpose: 'login' | 'signup' | 'verification'
-): Promise<boolean> {
+): Promise<{ success: boolean; error?: string }> {
   try {
     const purposeText = {
       login: 'Sign In',
@@ -109,36 +141,32 @@ async function sendOTPEmail(
               <!-- OTP Code -->
               <table role="presentation" style="width: 100%; border-collapse: collapse; margin: 0 0 30px 0;">
                 <tr>
-                  <td align="center" style="padding: 30px; background: linear-gradient(135deg, #f6f8ff 0%, #f0f4ff 100%); border-radius: 12px; border: 2px dashed #667eea;">
-                    <div style="font-size: 48px; font-weight: 700; letter-spacing: 8px; color: #667eea; font-family: 'Courier New', monospace;">
+                  <td align="center" style="background: #f7fafc; border-radius: 12px; padding: 25px; border: 2px dashed #cbd5e0;">
+                    <div style="font-family: 'Courier New', monospace; font-size: 36px; font-weight: 700; letter-spacing: 8px; color: #4c51bf;">
                       ${otp}
                     </div>
+                    <p style="margin: 10px 0 0 0; color: #718096; font-size: 13px;">
+                      Expires in ${OTP_EXPIRY_MINUTES} minutes
+                    </p>
                   </td>
                 </tr>
               </table>
               
-              <div style="background: #fff5f5; border-left: 4px solid #f56565; padding: 16px; border-radius: 8px; margin: 0 0 30px 0;">
-                <p style="margin: 0; color: #742a2a; font-size: 14px; line-height: 1.5;">
-                  ⏱️ <strong>This code expires in ${OTP_EXPIRY_MINUTES} minutes</strong><br>
-                  🔒 Never share this code with anyone<br>
-                  ❌ If you didn't request this, please ignore this email
-                </p>
-              </div>
-              
-              <p style="margin: 0; color: #718096; font-size: 14px; line-height: 1.6;">
-                Having trouble? Just reply to this email and we'll help you out.
+              <p style="margin: 0 0 20px 0; color: #4a5568; font-size: 14px; line-height: 1.6;">
+                <strong>Security Tips:</strong><br>
+                • Never share this code with anyone<br>
+                • Mind Ease staff will never ask for this code<br>
+                • If you didn't request this code, you can safely ignore this email
               </p>
             </td>
           </tr>
           
           <!-- Footer -->
           <tr>
-            <td style="background: #f7fafc; padding: 30px; text-align: center; border-top: 1px solid #e2e8f0;">
-              <p style="margin: 0 0 10px 0; color: #718096; font-size: 14px;">
-                This email was sent from <strong>Mind Ease</strong>
-              </p>
-              <p style="margin: 0; color: #a0aec0; font-size: 12px;">
-                Your mental health companion powered by AI
+            <td style="background: #f7fafc; padding: 20px 30px; text-align: center; border-top: 1px solid #e2e8f0;">
+              <p style="margin: 0; color: #718096; font-size: 12px;">
+                © ${new Date().getFullYear()} Mind Ease. All rights reserved.<br>
+                Empowering your mental wellness journey with AI.
               </p>
             </td>
           </tr>
@@ -150,29 +178,46 @@ async function sendOTPEmail(
 </html>
     `
 
+    // Option 1: Try Nodemailer SMTP (supports Gmail App Password, etc.)
+    const transporter = getSmtpTransporter()
+    if (transporter) {
+      const fromAddress = process.env.EMAIL_FROM || process.env.SMTP_USER
+      await transporter.sendMail({
+        from: `"Mind Ease" <${fromAddress}>`,
+        to: email,
+        subject,
+        html,
+      })
+      console.log('[OTP Service] Email sent successfully via SMTP to:', email)
+      return { success: true }
+    }
+
+    // Option 2: Try Resend API
     const resend = getResendClient()
-    if (!resend) {
-      console.warn('[OTP Service] RESEND_API_KEY is not set. Simulating OTP email delivery for:', email)
-      return true
+    if (resend) {
+      const fromAddress = process.env.EMAIL_FROM || 'Mind Ease <onboarding@resend.dev>'
+      const { data, error } = await resend.emails.send({
+        from: fromAddress,
+        to: email,
+        subject,
+        html,
+      })
+
+      if (error) {
+        console.error('[OTP Service] Resend error:', error)
+        return { success: false, error: error.message || 'Resend failed to deliver email' }
+      }
+
+      console.log('[OTP Service] Email sent successfully via Resend:', data?.id)
+      return { success: true }
     }
 
-    const { data, error } = await resend.emails.send({
-      from: 'Mind Ease <onboarding@resend.dev>', // Use your verified domain in production
-      to: email,
-      subject,
-      html,
-    })
-
-    if (error) {
-      console.error('[OTP Service] Failed to send email:', error)
-      return false
-    }
-
-    console.log('[OTP Service] Email sent successfully:', data?.id)
-    return true
-  } catch (error) {
+    // Option 3: Fallback if no provider is configured
+    console.warn('[OTP Service] No email provider configured. Simulating delivery for:', email)
+    return { success: true }
+  } catch (error: any) {
     console.error('[OTP Service] Error sending OTP email:', error)
-    return false
+    return { success: false, error: error?.message || 'Error sending email' }
   }
 }
 
@@ -186,10 +231,11 @@ export async function generateAndSendOTP(
   success: boolean
   message: string
   expiresIn?: number
+  devOtp?: string
 }> {
   try {
-    // Validate email
-    if (!email || !email.includes('@')) {
+    const cleanEmail = email.trim().toLowerCase()
+    if (!cleanEmail || !cleanEmail.includes('@')) {
       return {
         success: false,
         message: 'Invalid email address',
@@ -197,37 +243,39 @@ export async function generateAndSendOTP(
     }
 
     // Check rate limiting
-    if (isRateLimited(email)) {
+    if (isRateLimited(cleanEmail)) {
       return {
         success: false,
         message: `Please wait ${RATE_LIMIT_MINUTES} minute(s) before requesting another code`,
       }
     }
 
-    // Check if Resend API key is configured
-    if (!process.env.RESEND_API_KEY) {
-      console.warn('[OTP Service] Resend API key not configured - using console output')
-      
-      // Development mode - just generate and log OTP
-      const otp = generateOTP()
-      const expiresAt = new Date(Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000)
+    const hasResend = !!process.env.RESEND_API_KEY
+    const hasSmtp = !!(process.env.SMTP_USER && process.env.SMTP_PASS)
+    const isEmailConfigured = hasResend || hasSmtp
 
-      // Store OTP
-      otpStore.set(email, {
-        code: otp,
-        email,
-        expiresAt,
-        attempts: 0,
-        purpose,
-      })
+    // Generate OTP
+    const otp = generateOTP()
+    const expiresAt = new Date(Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000)
 
-      // Update rate limit
-      rateLimitStore.set(email, new Date())
+    // Store OTP in memory
+    otpStore.set(cleanEmail, {
+      code: otp,
+      email: cleanEmail,
+      expiresAt,
+      attempts: 0,
+      purpose,
+    })
 
+    // Update rate limit
+    rateLimitStore.set(cleanEmail, new Date())
+
+    // If no email provider is configured, operate in Demo / Development mode
+    if (!isEmailConfigured) {
       console.log('\n' + '='.repeat(60))
-      console.log('📧 OTP EMAIL (Development Mode)')
+      console.log('📧 OTP CODE GENERATED (Demo Mode - No Email API Key Configured)')
       console.log('='.repeat(60))
-      console.log(`To: ${email}`)
+      console.log(`To: ${cleanEmail}`)
       console.log(`Purpose: ${purpose}`)
       console.log(`Code: ${otp}`)
       console.log(`Expires: ${expiresAt.toLocaleString()}`)
@@ -235,40 +283,25 @@ export async function generateAndSendOTP(
 
       return {
         success: true,
-        message: 'OTP sent successfully (check console in development mode)',
+        message: 'Demo mode: email service not configured. Use the code shown on screen or 123456.',
         expiresIn: OTP_EXPIRY_MINUTES,
+        devOtp: otp,
       }
     }
 
-    // Generate OTP
-    const otp = generateOTP()
-    const expiresAt = new Date(Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000)
+    // Send real email via configured provider
+    const sendResult = await sendOTPEmail(cleanEmail, otp, purpose)
 
-    // Send email
-    const emailSent = await sendOTPEmail(email, otp, purpose)
-
-    if (!emailSent) {
+    if (!sendResult.success) {
       return {
         success: false,
-        message: 'Failed to send OTP email. Please try again.',
+        message: sendResult.error || 'Failed to send OTP email. Please check email credentials.',
       }
     }
-
-    // Store OTP
-    otpStore.set(email, {
-      code: otp,
-      email,
-      expiresAt,
-      attempts: 0,
-      purpose,
-    })
-
-    // Update rate limit
-    rateLimitStore.set(email, new Date())
 
     return {
       success: true,
-      message: 'OTP sent successfully to your email',
+      message: 'Verification code sent to your email',
       expiresIn: OTP_EXPIRY_MINUTES,
     }
   } catch (error: any) {
@@ -291,10 +324,32 @@ export async function verifyOTP(
   message: string
 }> {
   try {
+    const cleanEmail = email.trim().toLowerCase()
+    const cleanCode = code.trim()
+
+    const hasResend = !!process.env.RESEND_API_KEY
+    const hasSmtp = !!(process.env.SMTP_USER && process.env.SMTP_PASS)
+    const isEmailConfigured = hasResend || hasSmtp
+
+    // Universal test/demo bypass code when email service is unconfigured
+    if (!isEmailConfigured && (cleanCode === '123456' || cleanCode === '000000')) {
+      return {
+        success: true,
+        message: 'OTP verified successfully (demo mode)',
+      }
+    }
+
     // Get stored OTP
-    const otpRecord = otpStore.get(email)
+    const otpRecord = otpStore.get(cleanEmail)
 
     if (!otpRecord) {
+      // In unconfigured demo mode, allow 123456 even if store expired
+      if (!isEmailConfigured && cleanCode === '123456') {
+        return {
+          success: true,
+          message: 'OTP verified successfully (demo mode)',
+        }
+      }
       return {
         success: false,
         message: 'No OTP found. Please request a new one.',
@@ -303,7 +358,7 @@ export async function verifyOTP(
 
     // Check expiration
     if (new Date() > otpRecord.expiresAt) {
-      otpStore.delete(email)
+      otpStore.delete(cleanEmail)
       return {
         success: false,
         message: 'OTP has expired. Please request a new one.',
@@ -312,7 +367,7 @@ export async function verifyOTP(
 
     // Check attempts
     if (otpRecord.attempts >= MAX_ATTEMPTS) {
-      otpStore.delete(email)
+      otpStore.delete(cleanEmail)
       return {
         success: false,
         message: 'Too many failed attempts. Please request a new OTP.',
@@ -320,9 +375,9 @@ export async function verifyOTP(
     }
 
     // Verify code
-    if (otpRecord.code !== code) {
+    if (otpRecord.code !== cleanCode && (!isEmailConfigured && cleanCode !== '123456')) {
       otpRecord.attempts++
-      otpStore.set(email, otpRecord)
+      otpStore.set(cleanEmail, otpRecord)
 
       const remainingAttempts = MAX_ATTEMPTS - otpRecord.attempts
       return {
@@ -332,8 +387,8 @@ export async function verifyOTP(
     }
 
     // Success - delete OTP
-    otpStore.delete(email)
-    rateLimitStore.delete(email)
+    otpStore.delete(cleanEmail)
+    rateLimitStore.delete(cleanEmail)
 
     return {
       success: true,
@@ -360,5 +415,10 @@ export function cleanupExpiredOTPs(): void {
   }
 }
 
-// Clean up expired OTPs every 5 minutes
-setInterval(cleanupExpiredOTPs, 5 * 60 * 1000)
+// Clean up expired OTPs every 5 minutes (unref timer so it doesn't block exits)
+if (typeof setInterval !== 'undefined') {
+  const timer = setInterval(cleanupExpiredOTPs, 5 * 60 * 1000)
+  if (timer?.unref) {
+    timer.unref()
+  }
+}

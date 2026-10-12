@@ -75,14 +75,15 @@ export async function POST(request: NextRequest) {
         token,
       })
     } else {
-      // Login - find existing user
-     const user = await getUserByEmail(email)
+      // Login - find existing user or auto-create for seamless OTP auth
+      let user = await getUserByEmail(email)
 
       if (!user) {
-        return NextResponse.json(
-          { error: 'No account found with this email. Please sign up first.' },
-          { status: 404 }
-        )
+        user = await createUser({
+          email,
+          name: name || email.split('@')[0],
+          password: '',
+        })
       }
 
       // Generate JWT token
