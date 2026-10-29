@@ -18,8 +18,8 @@ import type {
   Correlation,
   PredictiveInsight,
   TrendDirection,
-} from '@backend/types/analytics'
-import type { MoodEntry, MoodTrend, MoodPattern } from '@backend/types/mood'
+} from '@shared/types/analytics'
+import type { MoodEntry, MoodTrend, MoodPattern } from '@shared/types/mood'
 import { getMoodEntries, getMoodTrends, detectMoodPatterns } from './mood.service'
 
 /**
@@ -87,8 +87,7 @@ async function generateMoodAnalytics(
   }
 
   // Calculate average mood intensity
-  const averageMood =
-    entries.reduce((sum, entry) => sum + entry.intensity, 0) / entries.length
+  const averageMood = entries.reduce((sum, entry) => sum + entry.intensity, 0) / entries.length
 
   // Get mood trends
   const moodTrends = await getMoodTrends(userId, period as any)
@@ -128,10 +127,7 @@ async function generateMoodAnalytics(
  * Analyze triggers and their impact
  */
 function analyzeTriggers(entries: MoodEntry[]): TriggerAnalysis[] {
-  const triggerMap = new Map<
-    string,
-    { count: number; intensities: number[]; moods: Set<string> }
-  >()
+  const triggerMap = new Map<string, { count: number; intensities: number[]; moods: Set<string> }>()
 
   entries.forEach((entry) => {
     entry.triggers?.forEach((trigger) => {

@@ -5,15 +5,15 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getToken } from 'next-auth/jwt'
-import { isOpenAIConfigured } from '@backend/lib/env'
+import { isOpenAIConfigured } from '@shared/lib/env'
 import {
   generateChatResponse,
   detectCrisisKeywords,
   getCrisisResponseMessage,
 } from '@backend/services/ai-chat.service'
 import { analyzeSentiment } from '@backend/services/sentiment.service'
-import type { Message } from '@backend/types/message'
-import { auth } from '@backend/lib/auth'
+import type { Message } from '@shared/types/message'
+import { auth } from '@backend/auth/auth'
 
 export async function POST(request: NextRequest) {
   try {

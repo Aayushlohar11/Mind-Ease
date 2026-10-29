@@ -13,21 +13,24 @@ import {
   getCrisisResponseMessage,
   getMentalHealthSystemPrompt,
   AIChatErrorCode,
+  resetOpenAIClient,
 } from './ai-chat.service'
-import type { Message } from '@backend/types/message'
+import type { Message } from '@shared/types/message'
 
 // Mock the entire OpenAI module
 const mockCreate = vi.fn()
 
 vi.mock('openai', () => {
   return {
-    default: vi.fn().mockImplementation(() => ({
-      chat: {
-        completions: {
-          create: mockCreate,
+    default: vi.fn().mockImplementation(function () {
+      return {
+        chat: {
+          completions: {
+            create: mockCreate,
+          },
         },
-      },
-    })),
+      }
+    }),
   }
 })
 
@@ -35,6 +38,7 @@ describe('AI Chat Service', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     mockCreate.mockClear()
+    resetOpenAIClient()
     // Ensure environment variables are set
     process.env.OPENAI_API_KEY = 'test-api-key'
     process.env.OPENAI_MODEL = 'gpt-4-turbo'

@@ -16,8 +16,8 @@ import type {
   ContentInteraction,
   UserContentHistory,
   ContentFilter,
-} from '@backend/types/recommendation'
-import type { MoodEntry, MoodType, MoodCategory } from '@backend/types/mood'
+} from '@shared/types/recommendation'
+import type { MoodEntry, MoodType, MoodCategory } from '@shared/types/mood'
 import { getMoodEntries, getMoodHistory } from './mood.service'
 
 /**
@@ -27,168 +27,408 @@ import { getMoodEntries, getMoodHistory } from './mood.service'
 const CONTENT_LIBRARY: Content[] = [
   {
     id: 'content-1',
-    title: '5-Minute Breathing Exercise',
-    description: 'A quick breathing exercise to help calm anxiety and reduce stress',
+    title: '5-Minute Box Breathing Exercise',
+    description:
+      'A scientifically proven 4-4-4-4 breathing technique to deactivate your nervous system and instantly curb panic.',
     type: 'exercise',
     category: 'breathing',
-    tags: ['anxiety', 'stress', 'quick', 'beginner-friendly'],
+    tags: ['anxiety', 'stress', 'quick', 'beginner-friendly', 'box-breathing'],
     duration: 5,
     difficulty: 'beginner',
-    targetMoods: ['anxious', 'stressed'],
+    targetMoods: ['anxious', 'stressed', 'tired'],
     targetCategories: ['anxious', 'negative'],
+    interactiveType: 'breathing',
     metadata: {
       language: 'en',
-      rating: 4.7,
-      reviewCount: 1250,
-      completionRate: 0.85,
-      effectivenessScore: 0.82,
+      rating: 4.9,
+      reviewCount: 2450,
+      completionRate: 0.94,
+      effectivenessScore: 0.96,
     },
+    sections: [
+      {
+        heading: 'Why Box Breathing Works',
+        body: 'Also known as square breathing, this technique is utilized by athletes and Navy SEALs to regain mental clarity under intense pressure. It stimulates the vagus nerve, immediately shifting your body from sympathetic (fight-or-flight) to parasympathetic (rest-and-digest).',
+        bulletPoints: [
+          'Inhale slowly through your nose for 4 seconds',
+          'Gently hold that air in your lungs for 4 seconds',
+          'Exhale smoothly through your mouth for 4 seconds',
+          'Hold your breath empty for 4 seconds before the next breath',
+        ],
+      },
+    ],
     createdAt: new Date('2024-01-01'),
     updatedAt: new Date('2024-01-01'),
   },
   {
     id: 'content-2',
-    title: 'Guided Meditation for Better Sleep',
-    description: 'A 15-minute guided meditation to help you relax and prepare for restful sleep',
+    title: 'Guided Ocean Soundscape & Sleep Meditation',
+    description:
+      'Immersive synthesized ocean swells and ambient delta frequencies to relax your muscles and encourage deep slumber.',
     type: 'audio',
     category: 'meditation',
-    tags: ['sleep', 'relaxation', 'evening', 'guided'],
+    tags: ['sleep', 'relaxation', 'evening', 'guided', 'ocean-waves'],
     duration: 15,
     difficulty: 'beginner',
-    targetMoods: ['tired', 'anxious'],
+    targetMoods: ['tired', 'anxious', 'stressed'],
     targetCategories: ['negative', 'anxious'],
+    interactiveType: 'audio_session',
+    audioAmbientType: 'ocean',
     metadata: {
       language: 'en',
       rating: 4.8,
       reviewCount: 2100,
-      completionRate: 0.78,
-      effectivenessScore: 0.88,
+      completionRate: 0.88,
+      effectivenessScore: 0.89,
     },
+    sections: [
+      {
+        heading: 'Preparing for Rest',
+        body: 'Lie down in a comfortable position, dim your lights, and let the gentle rhythm of ocean surf synchronize with your resting breath. Notice any tension in your jaw, shoulders, and chest, and allow each swell to carry that tension away.',
+        bulletPoints: [
+          'Use headphones or place your phone nearby',
+          'Release tongue from the roof of your mouth',
+          'Let thoughts pass without judging or following them',
+        ],
+      },
+    ],
     createdAt: new Date('2024-01-05'),
     updatedAt: new Date('2024-01-05'),
   },
   {
     id: 'content-3',
-    title: 'Understanding Depression: A Guide',
-    description: 'Educational article about depression, its symptoms, and coping strategies',
+    title: 'Understanding Depression: A Compassionate Guide',
+    description:
+      'An educational breakdown of how depressive episodes operate, common cognitive traps, and actionable steps to take.',
     type: 'article',
     category: 'education',
-    tags: ['depression', 'education', 'mental-health', 'coping'],
+    tags: ['depression', 'education', 'mental-health', 'coping', 'self-compassion'],
     duration: 10,
     difficulty: 'beginner',
-    targetMoods: ['sad', 'very_sad'],
-    targetCategories: ['negative'],
+    targetMoods: ['sad', 'tired', 'neutral'],
+    targetCategories: ['negative', 'neutral'],
+    interactiveType: 'article',
     metadata: {
       language: 'en',
-      rating: 4.6,
-      reviewCount: 850,
-      effectivenessScore: 0.75,
+      rating: 4.7,
+      reviewCount: 1350,
+      completionRate: 0.85,
+      effectivenessScore: 0.88,
     },
+    sections: [
+      {
+        heading: '1. What You Are Experiencing Is Not Laziness',
+        body: 'Depression often masquerades as apathy, guilt, or exhaustion. It is a biological and psychological response that downregulates motivation circuitry. When everyday tasks feel like wading through wet cement, self-criticism only amplifies the weight.',
+        bulletPoints: [
+          'Recognize emotional exhaustion without assigning moral blame',
+          'Lower the threshold: doing 10% of a task is 100% better than zero',
+        ],
+      },
+      {
+        heading: '2. The "Micro-Step" Strategy',
+        body: 'Do not aim for a complete life makeover when energy is depleted. Pick one small non-negotiable anchor: drinking a glass of water, opening the window for natural light, or taking two minutes of intentional rest.',
+        bulletPoints: [
+          'Micro-Step: Get out of bed for 3 minutes without requiring yourself to stay up',
+          'Micro-Step: Text a supportive friend one emoji or word without having to explain',
+        ],
+      },
+    ],
     createdAt: new Date('2024-01-10'),
     updatedAt: new Date('2024-01-10'),
   },
   {
     id: 'content-4',
     title: 'Gratitude Journaling Practice',
-    description: 'Learn how to start a gratitude journal to improve your mood and outlook',
+    description:
+      'A structured 3-part reflection prompt that shifts neurological focus from scarcity to appreciation.',
     type: 'exercise',
     category: 'journaling',
-    tags: ['gratitude', 'positive', 'daily-practice', 'self-reflection'],
+    tags: ['gratitude', 'positive', 'daily-practice', 'self-reflection', 'cbt'],
     duration: 10,
     difficulty: 'beginner',
-    targetMoods: ['neutral', 'happy'],
+    targetMoods: ['neutral', 'happy', 'calm', 'sad'],
     targetCategories: ['neutral', 'positive'],
+    interactiveType: 'journaling',
+    journalPrompts: [
+      'What is one small comfort or pleasant sensory detail you noticed today?',
+      'Who is someone whose presence, message, or existence you are thankful for?',
+      'What is a strength, choice, or tiny effort you made this week that you appreciate about yourself?',
+    ],
     metadata: {
       language: 'en',
       rating: 4.9,
-      reviewCount: 1800,
-      completionRate: 0.92,
-      effectivenessScore: 0.91,
+      reviewCount: 2800,
+      completionRate: 0.95,
+      effectivenessScore: 0.94,
     },
+    sections: [
+      {
+        heading: 'Rewiring the Brain for Positivity',
+        body: 'Our minds naturally suffer from a negativity bias, scanning for danger and deficit. Gratitude journaling is intentional counter-weight training that reinforces positive neural pathways when practiced consistently.',
+      },
+    ],
     createdAt: new Date('2024-01-15'),
     updatedAt: new Date('2024-01-15'),
   },
   {
     id: 'content-5',
-    title: 'Progressive Muscle Relaxation',
-    description: 'A technique to release physical tension and reduce anxiety',
+    title: 'Progressive Muscle Relaxation (PMR)',
+    description:
+      'Systematically tense and release 7 muscle groups to flush out physical stress hormones.',
     type: 'exercise',
     category: 'mindfulness',
-    tags: ['relaxation', 'anxiety', 'physical', 'tension-relief'],
+    tags: ['relaxation', 'anxiety', 'physical', 'tension-relief', 'body-scan'],
     duration: 12,
     difficulty: 'intermediate',
-    targetMoods: ['anxious', 'stressed'],
+    targetMoods: ['anxious', 'stressed', 'tired'],
     targetCategories: ['anxious', 'negative'],
+    interactiveType: 'breathing',
     metadata: {
       language: 'en',
       rating: 4.7,
-      reviewCount: 950,
-      completionRate: 0.81,
-      effectivenessScore: 0.84,
+      reviewCount: 1150,
+      completionRate: 0.86,
+      effectivenessScore: 0.89,
     },
+    sections: [
+      {
+        heading: 'How Physical Release Reverses Mental Strain',
+        body: 'Muscles hold chronic micro-tensions that signal distress back to the brain. By purposefully exaggerating tension and noticing the warm wave of release, you teach your body what true rest feels like.',
+        bulletPoints: [
+          'Clench your fists tightly for 5 seconds, then let go completely',
+          'Raise shoulders towards your ears for 5 seconds, then drop them softly',
+          'Notice the tingling warmth that replaces tension',
+        ],
+      },
+    ],
     createdAt: new Date('2024-01-20'),
     updatedAt: new Date('2024-01-20'),
   },
   {
     id: 'content-6',
-    title: 'When to Seek Professional Help',
-    description: "Understanding when it's time to reach out to a mental health professional",
+    title: 'When to Seek Professional Help & Helplines',
+    description:
+      'Clear signs that indicate therapy or counseling can assist, and how to reach out confidentially.',
     type: 'article',
     category: 'professional_help',
-    tags: ['therapy', 'counseling', 'professional', 'support'],
+    tags: ['therapy', 'counseling', 'professional', 'support', 'crisis-lines'],
     duration: 8,
     difficulty: 'beginner',
-    targetMoods: ['sad', 'very_sad'],
-    targetCategories: ['negative'],
+    targetMoods: ['sad', 'anxious', 'stressed'],
+    targetCategories: ['negative', 'anxious'],
+    interactiveType: 'article',
     metadata: {
       language: 'en',
-      rating: 4.8,
-      reviewCount: 1100,
-      effectivenessScore: 0.87,
+      rating: 4.9,
+      reviewCount: 1800,
+      completionRate: 0.92,
+      effectivenessScore: 0.96,
     },
+    sections: [
+      {
+        heading: 'When to Reach Out to a Professional',
+        body: 'You do not need to be in active crisis to benefit from therapy. Consider scheduling an intake if: your distress impacts daily sleep, hygiene, or work; self-help coping feels insufficient; or you feel trapped in repetitive pain cycles.',
+        bulletPoints: [
+          'Persistent hopelessness lasting longer than two weeks',
+          'Difficulty managing everyday responsibilities or relationships',
+          'Substance use or harmful behaviors to numb difficult feelings',
+        ],
+      },
+      {
+        heading: 'Free, Confidential Crisis Resources (Available 24/7)',
+        body: 'If you or someone you care about needs urgent support, compassionate listeners are ready right now:',
+        bulletPoints: [
+          '988 Suicide & Crisis Lifeline (US & Canada): Call or text 988',
+          'Crisis Text Line: Text HOME to 741741',
+          'The Trevor Project (LGBTQ Youth): Call 1-866-488-7386 or text START to 678-678',
+          'International Helplines: Visit befrienders.org or iasp.info/resources/Crisis_Centres',
+        ],
+      },
+    ],
     createdAt: new Date('2024-01-25'),
     updatedAt: new Date('2024-01-25'),
   },
   {
     id: 'content-7',
-    title: 'Mindful Walking Exercise',
-    description: 'Combine physical activity with mindfulness for improved mood',
+    title: 'Mindful Walking & Grounded Movement',
+    description:
+      'A 15-minute active mindfulness technique that syncs footsteps with breathing to clear mental clutter.',
     type: 'activity',
     category: 'physical_activity',
-    tags: ['walking', 'mindfulness', 'outdoor', 'movement'],
-    duration: 20,
+    tags: ['walking', 'mindfulness', 'outdoor', 'movement', 'fresh-air'],
+    duration: 15,
     difficulty: 'beginner',
-    targetMoods: ['tired', 'neutral'],
-    targetCategories: ['neutral', 'negative'],
+    targetMoods: ['tired', 'neutral', 'calm', 'happy'],
+    targetCategories: ['neutral', 'positive'],
+    interactiveType: 'grounding',
+    groundingSteps: [
+      'Take 5 normal steps noticing the pressure of your heels contacting the earth.',
+      'Soften your gaze and identify 3 distinct colors in your surrounding environment.',
+      'Take a deep breath and feel the temperature of the air entering your nostrils.',
+      'Roll your shoulders back, loosen your jaw, and let your arms swing naturally.',
+    ],
     metadata: {
       language: 'en',
-      rating: 4.6,
-      reviewCount: 720,
-      completionRate: 0.88,
-      effectivenessScore: 0.79,
+      rating: 4.8,
+      reviewCount: 920,
+      completionRate: 0.91,
+      effectivenessScore: 0.87,
     },
     createdAt: new Date('2024-02-01'),
     updatedAt: new Date('2024-02-01'),
   },
   {
     id: 'content-8',
-    title: 'Building Social Connections',
-    description: 'Strategies for maintaining and strengthening relationships',
+    title: 'Building Authentic Social Connections',
+    description:
+      'Evidence-based communication strategies for cultivating genuine belonging and easing social isolation.',
     type: 'article',
     category: 'social_connection',
-    tags: ['relationships', 'social', 'connection', 'loneliness'],
+    tags: ['relationships', 'social', 'connection', 'loneliness', 'belonging'],
     duration: 12,
     difficulty: 'intermediate',
-    targetMoods: ['sad', 'very_sad'],
-    targetCategories: ['negative'],
+    targetMoods: ['sad', 'neutral', 'happy'],
+    targetCategories: ['negative', 'neutral'],
+    interactiveType: 'article',
     metadata: {
       language: 'en',
-      rating: 4.5,
-      reviewCount: 680,
-      effectivenessScore: 0.76,
+      rating: 4.6,
+      reviewCount: 840,
+      effectivenessScore: 0.81,
     },
+    sections: [
+      {
+        heading: 'Quality Over Quantity',
+        body: 'Loneliness is not solved by large crowds; it is soothed by felt mutual understanding. Cultivating one reliable reciprocal friendship is profoundly more protective than maintaining dozens of superficial contacts.',
+        bulletPoints: [
+          'Practice vulnerability in low-risk doses: share one honest feeling today',
+          'Ask open-ended curiosity questions rather than polite small talk',
+        ],
+      },
+    ],
     createdAt: new Date('2024-02-05'),
     updatedAt: new Date('2024-02-05'),
+  },
+  {
+    id: 'content-9',
+    title: 'Calming Visuals & Rain Soundscape',
+    description:
+      'Continuous soothing rain sounds and ambient frequencies designed to lower cortisol and sharpen focus.',
+    type: 'audio',
+    category: 'mindfulness',
+    tags: ['visual', 'rain', 'relaxation', 'decompression', 'focus'],
+    duration: 15,
+    difficulty: 'beginner',
+    targetMoods: ['anxious', 'stressed', 'tired'],
+    targetCategories: ['anxious', 'negative'],
+    interactiveType: 'audio_session',
+    audioAmbientType: 'rain',
+    metadata: {
+      language: 'en',
+      rating: 4.9,
+      reviewCount: 1720,
+      completionRate: 0.93,
+      effectivenessScore: 0.92,
+    },
+    sections: [
+      {
+        heading: 'Ambient Noise Benefits',
+        body: 'Steady pink noise mimics the acoustic envelope of natural environments, masking distracting background spikes and gently settling overactive brain waves.',
+      },
+    ],
+    createdAt: new Date('2024-02-10'),
+    updatedAt: new Date('2024-02-10'),
+  },
+  {
+    id: 'content-10',
+    title: 'Evening Digital Detox & Unwind Ritual',
+    description:
+      'A 20-minute restorative evening routine to disconnect from screens and restore inner peace.',
+    type: 'activity',
+    category: 'self_care',
+    tags: ['self-care', 'evening', 'screen-time', 'rest', 'sleep-hygiene'],
+    duration: 20,
+    difficulty: 'beginner',
+    targetMoods: ['tired', 'stressed', 'calm'],
+    targetCategories: ['negative', 'neutral'],
+    interactiveType: 'journaling',
+    journalPrompts: [
+      'What screen activity drained most of your energy today?',
+      'What is one physical item (tea, book, bath, stretch) that felt grounding tonight?',
+      'What can wait until tomorrow so you can rest peacefully now?',
+    ],
+    metadata: {
+      language: 'en',
+      rating: 4.8,
+      reviewCount: 1150,
+      completionRate: 0.89,
+      effectivenessScore: 0.9,
+    },
+    createdAt: new Date('2024-02-15'),
+    updatedAt: new Date('2024-02-15'),
+  },
+  {
+    id: 'content-11',
+    title: '5-4-3-2-1 Sensory Grounding Technique',
+    description:
+      'An interactive 5-step sensory anchoring tool to pull your awareness back to the present room during panic.',
+    type: 'exercise',
+    category: 'coping_strategies',
+    tags: ['panic', 'grounding', 'coping', 'immediate-relief', 'sensory'],
+    duration: 7,
+    difficulty: 'beginner',
+    targetMoods: ['anxious', 'stressed'],
+    targetCategories: ['anxious'],
+    interactiveType: 'grounding',
+    groundingSteps: [
+      '5 - Look: Name 5 objects you see around you right now (clock, cup, plant...)',
+      '4 - Feel: Notice 4 physical textures (chair back, fabric on skin, feet on floor...)',
+      '3 - Listen: Identify 3 distinct background sounds (fan, birds, distant traffic...)',
+      '2 - Smell: Notice 2 scents around you (fresh air, coffee, clothing...)',
+      '1 - Taste: Observe 1 taste lingering in your mouth or take a sip of water.',
+    ],
+    metadata: {
+      language: 'en',
+      rating: 4.95,
+      reviewCount: 3800,
+      completionRate: 0.97,
+      effectivenessScore: 0.98,
+    },
+    createdAt: new Date('2024-02-20'),
+    updatedAt: new Date('2024-02-20'),
+  },
+  {
+    id: 'content-12',
+    title: 'Mastering Emotional Agility: Video Workshop',
+    description:
+      'An interactive video and conceptual breakdown on observing difficult thoughts without getting hooked by them.',
+    type: 'video',
+    category: 'education',
+    tags: ['video', 'cbt', 'psychology', 'emotional-agility', 'act-therapy'],
+    duration: 25,
+    difficulty: 'intermediate',
+    targetMoods: ['neutral', 'sad', 'stressed', 'calm'],
+    targetCategories: ['neutral', 'negative'],
+    interactiveType: 'video_player',
+    metadata: {
+      language: 'en',
+      rating: 4.85,
+      reviewCount: 1420,
+      completionRate: 0.87,
+      effectivenessScore: 0.91,
+    },
+    sections: [
+      {
+        heading: 'Chapter 1: The Hook',
+        body: 'Thoughts like "I cannot handle this" or "Nobody cares" feel like immutable truths. Emotional agility starts with acknowledging: "I am having the thought that I cannot handle this."',
+      },
+      {
+        heading: 'Chapter 2: Values Over Impulses',
+        body: 'Courage is not the absence of fear, but taking value-aligned action even while fear is present in the passenger seat.',
+      },
+    ],
+    createdAt: new Date('2024-02-25'),
+    updatedAt: new Date('2024-02-25'),
   },
 ]
 
@@ -211,7 +451,7 @@ globalStore.__mindeaseContentInteractions = userInteractions
 export async function generateRecommendations(
   request: RecommendationRequest
 ): Promise<RecommendationResponse> {
-  const { userId, currentMood, preferences, limit = 5, excludeViewed = true } = request
+  const { userId, currentMood, preferences, limit = 6, excludeViewed = false } = request
 
   // Get user's mood history
   const moodHistory = await getMoodHistory(userId)
@@ -227,7 +467,10 @@ export async function generateRecommendations(
     const viewedIds = new Set(
       interactions.filter((i) => i.interactionType === 'view').map((i) => i.contentId)
     )
-    filteredContent = filteredContent.filter((c) => !viewedIds.has(c.id))
+    const nonViewed = filteredContent.filter((c) => !viewedIds.has(c.id))
+    if (nonViewed.length >= limit) {
+      filteredContent = nonViewed
+    }
   }
 
   // Score and rank content
@@ -246,8 +489,18 @@ export async function generateRecommendations(
     }
   })
 
-  // Sort by score and take top N
-  const topContent = scoredContent.sort((a, b) => b.score - a.score).slice(0, limit)
+  // Deduplicate strictly by content.id
+  const seenIds = new Set<string>()
+  const uniqueScoredContent = scoredContent.filter((item) => {
+    if (seenIds.has(item.content.id)) {
+      return false
+    }
+    seenIds.add(item.content.id)
+    return true
+  })
+
+  // Sort by score descending and take top N
+  const topContent = uniqueScoredContent.sort((a, b) => b.score - a.score).slice(0, limit)
 
   // Create recommendations
   const recommendations: Recommendation[] = topContent.map((item, index) => ({

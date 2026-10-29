@@ -10,7 +10,7 @@ import { cn } from '@frontend/lib/utils'
 import { ChatMessage } from './ChatMessage'
 import { ChatInput } from './ChatInput'
 import { TypingIndicator } from './TypingIndicator'
-import type { Message } from '@backend/types/message'
+import type { Message } from '@shared/types/message'
 import { AlertCircle, MessageSquare, Sparkles } from 'lucide-react'
 
 interface ChatContainerProps {

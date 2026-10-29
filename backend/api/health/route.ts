@@ -4,7 +4,7 @@
  */
 
 import { NextResponse } from 'next/server'
-import { healthCheck as dbHealthCheck } from '@backend/lib/db'
+import { healthCheck as dbHealthCheck } from '@backend/db'
 
 export async function GET() {
   try {
@@ -14,10 +14,7 @@ export async function GET() {
     const dbHealthy = await dbHealthCheck()
 
     // Check environment variables
-    const envHealthy = !!(
-      process.env.NEXTAUTH_SECRET &&
-      process.env.NEXTAUTH_URL
-    )
+    const envHealthy = !!(process.env.NEXTAUTH_SECRET && process.env.NEXTAUTH_URL)
 
     const responseTime = Date.now() - startTime
 

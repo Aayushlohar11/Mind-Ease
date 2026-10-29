@@ -4,6 +4,7 @@
  */
 
 import { Resend } from 'resend'
+import nodemailer from 'nodemailer'
 
 // Lazy-load Resend client
 function getResendClient(): Resend | null {
@@ -18,7 +19,8 @@ function getSmtpTransporter() {
   const user = process.env.SMTP_USER?.trim()
   // Clean all spaces/whitespace that often get copied into App Passwords (e.g. "abcd efgh ijkl mnop")
   const pass = process.env.SMTP_PASS?.replace(/\s+/g, '').trim()
-  const host = process.env.SMTP_HOST?.trim() || (user?.includes('@gmail.com') ? 'smtp.gmail.com' : undefined)
+  const host =
+    process.env.SMTP_HOST?.trim() || (user?.includes('@gmail.com') ? 'smtp.gmail.com' : undefined)
   const port = parseInt(process.env.SMTP_PORT?.trim() || '587')
 
   if (!user || !pass) {
@@ -26,9 +28,6 @@ function getSmtpTransporter() {
   }
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const nodemailer = require('nodemailer')
-    
     // If it's a Gmail address, nodemailer's built-in service definition handles port/host/TLS reliably
     if (user.includes('@gmail.com') || host === 'smtp.gmail.com') {
       return nodemailer.createTransport({
@@ -116,7 +115,7 @@ async function sendOTPEmail(
     }
 
     const subject = `Your ${purposeText[purpose]} Code - Mind Ease`
-    
+
     const html = `
 <!DOCTYPE html>
 <html>
@@ -303,11 +302,16 @@ export async function generateAndSendOTP(
     const sendResult = await sendOTPEmail(cleanEmail, otp, purpose)
 
     if (!sendResult.success) {
-      console.warn('[OTP Service] Email provider failed (' + sendResult.error + '). Falling back to demo mode code.')
+      console.warn(
+        '[OTP Service] Email provider failed (' +
+          sendResult.error +
+          '). Falling back to demo mode code.'
+      )
       // Graceful fallback: Do NOT crash or block the user! Show OTP and allow instant bypass
       return {
         success: true,
-        message: 'Email service authentication issue. Use the code shown on screen or 123456 to continue.',
+        message:
+          'Email service authentication issue. Use the code shown on screen or 123456 to continue.',
         expiresIn: OTP_EXPIRY_MINUTES,
         devOtp: otp,
       }

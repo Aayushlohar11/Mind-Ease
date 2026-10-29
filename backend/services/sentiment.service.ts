@@ -4,8 +4,8 @@
  */
 
 import Sentiment from 'sentiment'
-import type { SentimentScore } from '@backend/types/message'
-import type { MoodType, MoodCategory } from '@backend/types/mood'
+import type { SentimentScore } from '@shared/types/message'
+import type { MoodType, MoodCategory } from '@shared/types/mood'
 
 const sentiment = new Sentiment()
 
@@ -59,7 +59,11 @@ export function classifyMood(text: string, sentimentScore: number): MoodType {
     return 'stressed'
   }
 
-  if (lowerText.includes('calm') || lowerText.includes('peaceful') || lowerText.includes('relaxed')) {
+  if (
+    lowerText.includes('calm') ||
+    lowerText.includes('peaceful') ||
+    lowerText.includes('relaxed')
+  ) {
     return 'calm'
   }
 
@@ -71,7 +75,11 @@ export function classifyMood(text: string, sentimentScore: number): MoodType {
     return 'energetic'
   }
 
-  if (lowerText.includes('tired') || lowerText.includes('exhausted') || lowerText.includes('drained')) {
+  if (
+    lowerText.includes('tired') ||
+    lowerText.includes('exhausted') ||
+    lowerText.includes('drained')
+  ) {
     return 'tired'
   }
 

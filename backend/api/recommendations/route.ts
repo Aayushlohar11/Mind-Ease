@@ -9,8 +9,8 @@ import {
   getContent,
   getUserContentHistory,
 } from '@backend/services/recommendation.service'
-import type { ContentFilter } from '@backend/types/recommendation'
-import type { RecommendationRequest } from '@backend/types/recommendation'
+import type { ContentFilter } from '@shared/types/recommendation'
+import type { RecommendationRequest } from '@shared/types/recommendation'
 
 export async function GET(request: NextRequest) {
   try {
@@ -20,7 +20,17 @@ export async function GET(request: NextRequest) {
 
     if (mode === 'history') {
       if (!userId) {
-        return NextResponse.json({ error: 'User ID is required' }, { status: 400 })
+        return NextResponse.json({
+          success: true,
+          history: {
+            userId: 'anonymous',
+            interactions: [],
+            bookmarked: [],
+            completed: [],
+            inProgress: [],
+            preferences: { contentTypes: [], categories: [] },
+          },
+        })
       }
 
       const history = await getUserContentHistory(userId)
@@ -60,18 +70,41 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body: RecommendationRequest = await request.json()
-
-    // Validate request
-    if (!body.userId) {
-      return NextResponse.json({ error: 'User ID is required' }, { status: 400 })
-    }
+    const effectiveUserId = body.userId || 'anonymous'
 
     // Generate recommendations
-    const recommendations = await generateRecommendations(body)
+    const recommendations = await generateRecommendations({
+      ...body,
+      userId: effectiveUserId,
+    })
 
     return NextResponse.json(recommendations)
   } catch (error) {
     console.error('Error generating recommendations:', error)
-    return NextResponse.json({ error: 'Failed to generate recommendations' }, { status: 500 })
+    // Fallback gracefully to library content if recommendation engine fails
+    try {
+      const fallbackContents = getContent().slice(0, 6)
+      return NextResponse.json({
+        recommendations: fallbackContents.map((content, idx) => ({
+          id: `fallback_${idx}`,
+          userId: 'anonymous',
+          content,
+          score: 0.8,
+          reason: 'Curated wellness resource',
+          reasoning: {
+            factors: [],
+            confidence: 0.8,
+          },
+          createdAt: new Date(),
+          viewed: false,
+          interacted: false,
+        })),
+        totalCount: fallbackContents.length,
+        generatedAt: new Date(),
+        refreshIn: 3600,
+      })
+    } catch {
+      return NextResponse.json({ error: 'Failed to generate recommendations' }, { status: 500 })
+    }
   }
 }

@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { Activity, Check, CircleDot, Gauge, MapPin, Plus, Waves } from 'lucide-react'
 import { cn } from '@frontend/lib/utils'
-import type { MoodContext, MoodType } from '@backend/types/mood'
+import type { MoodContext, MoodType } from '@shared/types/mood'
 
 interface MoodOption {
   mood: MoodType

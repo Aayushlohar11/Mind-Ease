@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@frontend/components/ui/button'
 import { Input } from '@frontend/components/ui/input'
-import { AuthLayout } from '@frontend/components/portfolio/AuthLayout'
-import OTPInput from '@/frontend/components/OTPInput'
+import { AuthLayout } from '@frontend/components/auth/AuthLayout'
+import { OTPInput } from '@frontend/components/auth'
 
 type Step = 'details' | 'otp'
 
@@ -201,7 +201,7 @@ export default function SignupPage() {
               className={inputClass}
             />
             <p className="text-xs text-muted-foreground">
-              We'll send a verification code to this email
+              We&apos;ll send a verification code to this email
             </p>
           </div>
           {error && (
@@ -276,7 +276,11 @@ export default function SignupPage() {
             </button>
           </div>
           <p className="text-amber-300/80 leading-relaxed">
-            Email service not configured. Your verification code is <strong className="font-mono text-white text-sm tracking-wider px-1 bg-white/10 rounded">{devOtp}</strong> (or enter <strong>123456</strong>).
+            Email service not configured. Your verification code is{' '}
+            <strong className="font-mono text-white text-sm tracking-wider px-1 bg-white/10 rounded">
+              {devOtp}
+            </strong>{' '}
+            (or enter <strong>123456</strong>).
           </p>
         </div>
       )}

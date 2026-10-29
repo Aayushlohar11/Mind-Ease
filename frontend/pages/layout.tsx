@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { Syne, DM_Sans } from 'next/font/google'
-import '../styles/globals.css'
+import '@frontend/styles/globals.css'
 import { SessionProvider } from '@frontend/components/providers/session-provider'
 import { Navbar } from '@frontend/components/navigation/Navbar'
 

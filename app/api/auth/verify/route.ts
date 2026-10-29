@@ -1,3 +1,1 @@
-import { GET as handler } from '@backend/api/auth/verify/route'
-
-export const GET = handler
+export { GET } from '@backend/api/auth/verify/route'

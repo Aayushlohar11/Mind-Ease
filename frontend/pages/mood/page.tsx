@@ -19,7 +19,7 @@ import {
   TrendingUp,
 } from 'lucide-react'
 import { MoodEntryForm } from '@frontend/components/mood/MoodSelector'
-import type { MoodEntry, MoodHistory, MoodPattern, MoodTrend, MoodType } from '@backend/types/mood'
+import type { MoodEntry, MoodHistory, MoodPattern, MoodTrend, MoodType } from '@shared/types/mood'
 
 type Notice = {
   type: 'success' | 'error'

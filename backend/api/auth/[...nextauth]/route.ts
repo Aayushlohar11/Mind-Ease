@@ -3,7 +3,7 @@
  */
 
 import NextAuth from 'next-auth'
-import { authOptions } from '@backend/lib/auth'
+import { authOptions } from '@backend/auth/auth'
 
 const handler = NextAuth(authOptions)
 

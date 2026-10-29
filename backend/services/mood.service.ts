@@ -3,8 +3,8 @@
  * Handles mood entry storage, retrieval, and trend analysis
  */
 
-import * as moodRepository from '@backend/lib/repositories/mood.repository'
-import { isDatabaseConfigured } from '@backend/lib/db'
+import * as moodRepository from '@backend/repositories/mood.repository'
+import { isDatabaseConfigured } from '@backend/db'
 import type {
   MoodEntry,
   MoodEntryInput,
@@ -16,7 +16,7 @@ import type {
   MoodType,
   MoodCategory,
   DateRange,
-} from '@backend/types/mood'
+} from '@shared/types/mood'
 import { getMoodCategory } from './sentiment.service'
 
 // In-memory mood storage when PostgreSQL is not configured.

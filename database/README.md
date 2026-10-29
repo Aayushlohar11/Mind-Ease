@@ -13,12 +13,14 @@ This guide will help you set up the PostgreSQL database for Mind Ease.
 ### 1. Install PostgreSQL
 
 **macOS (using Homebrew):**
+
 ```bash
 brew install postgresql@14
 brew services start postgresql@14
 ```
 
 **Ubuntu/Debian:**
+
 ```bash
 sudo apt update
 sudo apt install postgresql postgresql-contrib
@@ -152,14 +154,14 @@ psql -U postgres -d mindease_db -c "SELECT cleanup_expired_analytics();"
 ### View Database Size
 
 ```sql
-SELECT 
+SELECT
     pg_size_pretty(pg_database_size('mindease_db')) as database_size;
 ```
 
 ### View Table Sizes
 
 ```sql
-SELECT 
+SELECT
     schemaname,
     tablename,
     pg_size_pretty(pg_total_relation_size(schemaname||'.'||tablename)) AS size
@@ -183,10 +185,10 @@ All critical indexes are created automatically by `schema.sql`:
 
 ```sql
 -- Analyze query performance
-EXPLAIN ANALYZE 
-SELECT * FROM mood_entries 
-WHERE user_id = 'some-uuid' 
-ORDER BY timestamp DESC 
+EXPLAIN ANALYZE
+SELECT * FROM mood_entries
+WHERE user_id = 'some-uuid'
+ORDER BY timestamp DESC
 LIMIT 20;
 
 -- Update table statistics
@@ -197,6 +199,7 @@ ANALYZE chat_messages;
 ### Connection Pooling
 
 The application uses connection pooling with these defaults:
+
 - Min connections: 2
 - Max connections: 20
 - Idle timeout: 30 seconds
@@ -253,6 +256,7 @@ CREATE DATABASE mindease_db;
 ### 1. Use Managed Database Service
 
 Recommended services:
+
 - **Vercel Postgres** (easiest for Vercel deployments)
 - **Supabase** (PostgreSQL with additional features)
 - **AWS RDS** (enterprise-grade)
@@ -339,6 +343,7 @@ SELECT COUNT(*) FROM mood_entries;
 ## Support
 
 For issues or questions:
+
 1. Check PostgreSQL logs: `/usr/local/var/log/postgres.log` (macOS)
 2. Review application logs
 3. Consult PostgreSQL documentation: https://www.postgresql.org/docs/
@@ -346,6 +351,7 @@ For issues or questions:
 ## Next Steps
 
 After setting up the database:
+
 1. ✅ Run schema migration
 2. ✅ Test connection
 3. ✅ Update application services to use database

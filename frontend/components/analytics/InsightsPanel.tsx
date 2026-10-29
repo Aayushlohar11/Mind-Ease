@@ -5,7 +5,7 @@
 
 'use client'
 
-import type { Insight } from '@backend/types/analytics'
+import type { Insight } from '@shared/types/analytics'
 import { Card } from '@frontend/components/ui/card'
 
 interface InsightsPanelProps {
@@ -66,9 +66,7 @@ export function InsightsPanel({ insights }: InsightsPanelProps) {
 
                 {insight.recommendations.length > 0 && (
                   <div className="space-y-1">
-                    <p className="text-xs font-medium text-gray-600 uppercase">
-                      Recommendations:
-                    </p>
+                    <p className="text-xs font-medium text-gray-600 uppercase">Recommendations:</p>
                     <ul className="text-sm space-y-1">
                       {insight.recommendations.map((rec, index) => (
                         <li key={index} className="flex items-start gap-2">

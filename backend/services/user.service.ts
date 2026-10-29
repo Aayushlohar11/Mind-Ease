@@ -1,10 +1,12 @@
 /**
  * User service
  * Handles user CRUD operations and profile management
- * Using in-memory storage (no database required)
+ * Supports PostgreSQL with in-memory fallback for local development
  */
 
-import type { User, UserProfile, UserPreferences } from '@backend/types/user'
+import { isDatabaseConfigured } from '@backend/db'
+import * as userRepository from '@backend/repositories/user.repository'
+import type { User, UserProfile, UserPreferences } from '@shared/types/user'
 
 // Persist in-memory storage across hot reloads in development
 const globalStore = globalThis as typeof globalThis & {
@@ -22,6 +24,9 @@ globalStore.__mindeaseUsersByEmail = usersByEmail
  * Get user by ID
  */
 export async function getUserById(userId: string): Promise<User | null> {
+  if (isDatabaseConfigured()) {
+    return userRepository.getUserById(userId)
+  }
   return users.get(userId) || null
 }
 
@@ -29,6 +34,9 @@ export async function getUserById(userId: string): Promise<User | null> {
  * Get user by email
  */
 export async function getUserByEmail(email: string): Promise<User | null> {
+  if (isDatabaseConfigured()) {
+    return userRepository.getUserByEmail(email)
+  }
   return usersByEmail.get(email.toLowerCase()) || null
 }
 
@@ -40,6 +48,14 @@ export async function createUser(data: {
   password: string
   name: string
 }): Promise<User> {
+  if (isDatabaseConfigured()) {
+    return userRepository.createUser({
+      email: data.email,
+      name: data.name,
+      passwordHash: data.password,
+    })
+  }
+
   const userId = `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
 
   const user: User = {
@@ -76,12 +92,6 @@ export async function createUser(data: {
   users.set(userId, user)
   usersByEmail.set(data.email.toLowerCase(), user)
 
-  console.log(`✅ User created: ${user.email} (ID: ${user.id})`)
-  console.log(`   Password hash stored: ${user.passwordHash ? 'Yes' : 'No'}`)
-  if (user.passwordHash) {
-    console.log(`   Hash length: ${user.passwordHash.length}`)
-    console.log(`   Hash preview: ${user.passwordHash.substring(0, 30)}...`)
-  }
   return user
 }
 
@@ -92,6 +102,10 @@ export async function updateUserProfile(
   userId: string,
   data: Partial<UserProfile>
 ): Promise<UserProfile> {
+  if (isDatabaseConfigured()) {
+    return userRepository.updateUserProfile(userId, data)
+  }
+
   const user = users.get(userId)
   if (!user) {
     throw new Error('User not found')
@@ -113,6 +127,10 @@ export async function updateUserProfile(
  * Get user profile
  */
 export async function getUserProfile(userId: string): Promise<UserProfile | null> {
+  if (isDatabaseConfigured()) {
+    return userRepository.getUserProfile(userId)
+  }
+
   const user = users.get(userId)
   if (!user) {
     return null
@@ -128,6 +146,10 @@ export async function updateUserPreferences(
   userId: string,
   data: Partial<UserPreferences>
 ): Promise<UserPreferences> {
+  if (isDatabaseConfigured()) {
+    return userRepository.updateUserPreferences(userId, data)
+  }
+
   const user = users.get(userId)
   if (!user) {
     throw new Error('User not found')
@@ -149,6 +171,10 @@ export async function updateUserPreferences(
  * Get user preferences
  */
 export async function getUserPreferences(userId: string): Promise<UserPreferences | null> {
+  if (isDatabaseConfigured()) {
+    return userRepository.getUserPreferences(userId)
+  }
+
   const user = users.get(userId)
   return user?.preferences || null
 }
@@ -157,11 +183,14 @@ export async function getUserPreferences(userId: string): Promise<UserPreference
  * Delete user
  */
 export async function deleteUser(userId: string): Promise<void> {
+  if (isDatabaseConfigured()) {
+    return userRepository.deleteUser(userId)
+  }
+
   const user = users.get(userId)
   if (user) {
     users.delete(userId)
     usersByEmail.delete(user.email.toLowerCase())
-    console.log(`🗑️ User deleted: ${user.email}`)
   }
 }
 
@@ -172,6 +201,10 @@ export async function updateUser(
   userId: string,
   data: { name?: string; email?: string }
 ): Promise<User> {
+  if (isDatabaseConfigured()) {
+    return userRepository.updateUser(userId, data)
+  }
+
   const user = users.get(userId)
   if (!user) {
     throw new Error('User not found')

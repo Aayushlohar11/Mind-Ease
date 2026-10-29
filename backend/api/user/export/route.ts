@@ -4,7 +4,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { auth } from '@backend/lib/auth'
+import { auth } from '@backend/auth/auth'
 import { getUserById } from '@backend/services/user.service'
 import { getMoodEntries } from '@backend/services/mood.service'
 import { getUserContentHistory } from '@backend/services/recommendation.service'

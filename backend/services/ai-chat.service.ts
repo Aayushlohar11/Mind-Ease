@@ -4,7 +4,7 @@
  */
 
 import OpenAI from 'openai'
-import { env, isOpenAIConfigured } from '@backend/lib/env'
+import { env, isOpenAIConfigured } from '@shared/lib/env'
 import type {
   ChatCompletionRequest,
   ChatCompletionResponse,
@@ -12,7 +12,7 @@ import type {
   AIError,
   TokenUsage,
   AIModel,
-} from '@backend/types/ai'
+} from '@shared/types/ai'
 import type {
   Message,
   ChatContext,
@@ -20,7 +20,7 @@ import type {
   ChatMessageResponse,
   MessageRole,
   ChatSession,
-} from '@backend/types/message'
+} from '@shared/types/message'
 
 // Lazy initialization of OpenAI client
 let openaiClient: OpenAI | null = null
@@ -34,13 +34,17 @@ function getOpenAIClient(): OpenAI {
   return openaiClient
 }
 
-// Enhanced configuration for more human-like, creative responses
+// Configuration for human-like responses
 const DEFAULT_MODEL: AIModel = 'gpt-4-turbo'
-const DEFAULT_MAX_TOKENS = 1500 // Increased for more thoughtful responses
-const DEFAULT_TEMPERATURE = 0.9 // Higher for more creative, varied responses
-const MAX_CONTEXT_MESSAGES = 25 // More context for better continuity
+const DEFAULT_MAX_TOKENS = 1000
+const DEFAULT_TEMPERATURE = 0.7
+const MAX_CONTEXT_MESSAGES = 20
 
 export { isOpenAIConfigured }
+
+export function resetOpenAIClient(): void {
+  openaiClient = null
+}
 
 /**
  * Enhanced human-like fallback responses when OpenAI is not configured
@@ -381,7 +385,7 @@ export async function sendChatCompletion(
         error,
         true
       )
-    } 
+    }
     // Check for HTTP status errors
     else if (error.status) {
       if (error.status === 429) {
@@ -413,7 +417,7 @@ export async function sendChatCompletion(
           false
         )
       }
-    } 
+    }
     // Default to API_ERROR for unknown errors
     else {
       aiError = createAIError(
@@ -453,24 +457,7 @@ export async function generateChatResponse(
   const requestId = `chat_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
 
   try {
-    // Use local fallback when OpenAI API key is not configured
-    if (!isOpenAIConfigured()) {
-      console.warn(
-        '[ai-chat] OpenAI API key not configured - using development fallback responses. Set OPENAI_API_KEY in .env for real AI replies.'
-      )
-      return {
-        success: true,
-        data: generateDevFallbackResponse(userMessage),
-        metadata: {
-          requestId,
-          model: 'dev-fallback',
-          processingTime: Date.now() - startTime,
-          timestamp: new Date(),
-        },
-      }
-    }
-
-    // Validate input
+    // Validate input first
     if (!userMessage || userMessage.trim().length === 0) {
       return {
         success: false,
@@ -483,6 +470,23 @@ export async function generateChatResponse(
         metadata: {
           requestId,
           model: DEFAULT_MODEL,
+          processingTime: Date.now() - startTime,
+          timestamp: new Date(),
+        },
+      }
+    }
+
+    // Use local fallback when OpenAI API key is not configured
+    if (!isOpenAIConfigured()) {
+      console.warn(
+        '[ai-chat] OpenAI API key not configured - using development fallback responses. Set OPENAI_API_KEY in .env for real AI replies.'
+      )
+      return {
+        success: true,
+        data: generateDevFallbackResponse(userMessage),
+        metadata: {
+          requestId,
+          model: 'dev-fallback',
           processingTime: Date.now() - startTime,
           timestamp: new Date(),
         },

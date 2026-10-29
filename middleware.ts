@@ -1,5 +1,6 @@
 /**
  * Middleware for route protection and authentication
+ * Hardened: Requires valid cryptographically verified JWT token
  */
 
 import { NextResponse } from 'next/server'
@@ -7,7 +8,14 @@ import type { NextRequest } from 'next/server'
 import { getToken } from 'next-auth/jwt'
 
 // Routes that require authentication
-const protectedRoutes = ['/dashboard', '/profile', '/chat', '/mood', '/analytics']
+const protectedRoutes = [
+  '/dashboard',
+  '/profile',
+  '/chat',
+  '/mood',
+  '/analytics',
+  '/recommendations',
+]
 
 // Routes that should redirect to dashboard if already authenticated
 const authRoutes = ['/auth/login', '/auth/signup']
@@ -17,12 +25,7 @@ const AUTH_SECRET = process.env.NEXTAUTH_SECRET || 'default-secret-change-me'
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // Check if session cookie exists
-  const hasSessionCookie =
-    request.cookies.has('__Secure-next-auth.session-token') ||
-    request.cookies.has('next-auth.session-token')
-
-  // Get the token from the request
+  // Get and cryptographically verify the token from the request
   let token = null
   try {
     token = await getToken({
@@ -34,8 +37,8 @@ export async function middleware(request: NextRequest) {
     console.error('Middleware getToken error:', err)
   }
 
-  // User is authenticated if token was decoded or valid session cookie is present
-  const isAuthenticated = !!token || hasSessionCookie
+  // User is authenticated ONLY if token was decoded and verified
+  const isAuthenticated = !!token
 
   // Check if the current route is protected
   const isProtectedRoute = protectedRoutes.some((route) => pathname.startsWith(route))
@@ -62,11 +65,12 @@ export const config = {
   matcher: [
     /*
      * Match all request paths except for the ones starting with:
-     * - api (API routes)
+     * - api (API routes have their own auth)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
+     * - public files (images, icons, etc.)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)',
   ],
 }

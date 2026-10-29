@@ -4,24 +4,19 @@ const path = require('path')
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  // Tell SWC/webpack to transpile files from these directories
-  // This fixes "Unexpected token" JSX errors for files in frontend/ and backend/
-  transpilePackages: ['frontend', 'backend'],
+  transpilePackages: ['frontend', 'backend', 'shared'],
   experimental: {
     serverActions: {
-      allowedOrigins: [
-        'localhost:3000',
-        '*.vercel.app',
-      ],
+      allowedOrigins: ['localhost:3000', '*.vercel.app'],
     },
   },
   webpack: (config) => {
-    // Ensure path aliases resolve correctly for both local and Vercel builds
     config.resolve.alias = {
       ...config.resolve.alias,
+      '@': path.resolve(__dirname),
       '@frontend': path.resolve(__dirname, 'frontend'),
       '@backend': path.resolve(__dirname, 'backend'),
-      '@': path.resolve(__dirname),
+      '@shared': path.resolve(__dirname, 'shared'),
     }
     return config
   },

@@ -4,9 +4,9 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { auth } from '@backend/lib/auth'
+import { auth } from '@backend/auth/auth'
 import { deleteUser } from '@backend/services/user.service'
-import { query } from '@backend/lib/db'
+import { query } from '@backend/db'
 
 export async function DELETE(request: NextRequest) {
   try {

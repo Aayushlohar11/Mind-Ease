@@ -6,7 +6,7 @@
 'use client'
 
 import { useState } from 'react'
-import type { Content } from '@backend/types/recommendation'
+import type { Content } from '@shared/types/recommendation'
 import { Card } from '@frontend/components/ui/card'
 import { Button } from '@frontend/components/ui/button'
 
@@ -125,9 +125,7 @@ export function ContentCard({
         <p className="text-sm text-gray-600 line-clamp-3">{content.description}</p>
 
         {reason && (
-          <div className="mt-2 p-2 bg-blue-50 rounded text-xs text-blue-700">
-            💡 {reason}
-          </div>
+          <div className="mt-2 p-2 bg-blue-50 rounded text-xs text-blue-700">💡 {reason}</div>
         )}
 
         {/* Tags */}

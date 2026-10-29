@@ -5,7 +5,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { generateAnalytics, generatePredictiveInsights } from '@backend/services/analytics.service'
-import type { AnalyticsQuery } from '@backend/types/analytics'
+import type { AnalyticsQuery } from '@shared/types/analytics'
 
 export async function POST(request: NextRequest) {
   try {

@@ -5,8 +5,16 @@
 
 'use client'
 
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
-import type { MoodDataPoint } from '@backend/types/mood'
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from 'recharts'
+import type { MoodDataPoint } from '@shared/types/mood'
 
 interface TrendChartProps {
   data: MoodDataPoint[]
@@ -40,12 +48,8 @@ export function TrendChart({ data }: TrendChartProps) {
               return (
                 <div className="bg-white p-3 border rounded shadow-lg">
                   <p className="font-medium">{payload[0].payload.date}</p>
-                  <p className="text-sm text-gray-600">
-                    Mood: {payload[0].payload.mood}
-                  </p>
-                  <p className="text-sm">
-                    Intensity: {payload[0].value}/10
-                  </p>
+                  <p className="text-sm text-gray-600">Mood: {payload[0].payload.mood}</p>
+                  <p className="text-sm">Intensity: {payload[0].value}/10</p>
                 </div>
               )
             }

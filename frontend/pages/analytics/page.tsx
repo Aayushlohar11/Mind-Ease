@@ -8,7 +8,7 @@
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import type { Analytics } from '@backend/types/analytics'
+import type { Analytics } from '@shared/types/analytics'
 import { BarChart3, TrendingUp, Sparkles, Activity, Clock, Zap, AlertTriangle } from 'lucide-react'
 
 export default function AnalyticsPage() {
@@ -133,7 +133,8 @@ export default function AnalyticsPage() {
         <div
           className="flex justify-between items-center rounded-2xl px-6 py-5"
           style={{
-            background: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
+            background:
+              'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
             border: '1px solid rgba(255,255,255,0.08)',
             backdropFilter: 'blur(24px)',
             WebkitBackdropFilter: 'blur(24px)',
@@ -159,17 +160,20 @@ export default function AnalyticsPage() {
                   className="px-4 py-2 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] capitalize"
                   style={{
                     color: period === p ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.5)',
-                    background: period === p
-                      ? 'linear-gradient(135deg, rgba(99,102,241,0.4) 0%, rgba(139,92,246,0.4) 100%)'
-                      : 'rgba(255,255,255,0.04)',
-                    border: period === p
-                      ? '1px solid rgba(139,92,246,0.3)'
-                      : '1px solid rgba(255,255,255,0.08)',
+                    background:
+                      period === p
+                        ? 'linear-gradient(135deg, rgba(99,102,241,0.4) 0%, rgba(139,92,246,0.4) 100%)'
+                        : 'rgba(255,255,255,0.04)',
+                    border:
+                      period === p
+                        ? '1px solid rgba(139,92,246,0.3)'
+                        : '1px solid rgba(255,255,255,0.08)',
                     backdropFilter: 'blur(12px)',
                     WebkitBackdropFilter: 'blur(12px)',
-                    boxShadow: period === p
-                      ? '0 0 12px rgba(139,92,246,0.2), inset 0 1px 0 rgba(255,255,255,0.1)'
-                      : 'inset 0 1px 0 rgba(255,255,255,0.04)',
+                    boxShadow:
+                      period === p
+                        ? '0 0 12px rgba(139,92,246,0.2), inset 0 1px 0 rgba(255,255,255,0.1)'
+                        : 'inset 0 1px 0 rgba(255,255,255,0.04)',
                   }}
                 >
                   {p}
@@ -229,7 +233,8 @@ export default function AnalyticsPage() {
               <div
                 className="p-5 rounded-2xl"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
+                  background:
+                    'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
                   border: '1px solid rgba(255,255,255,0.08)',
                   backdropFilter: 'blur(24px)',
                   WebkitBackdropFilter: 'blur(24px)',
@@ -240,7 +245,8 @@ export default function AnalyticsPage() {
                   <div
                     className="flex items-center justify-center w-10 h-10 rounded-xl"
                     style={{
-                      background: 'linear-gradient(135deg, rgba(99,102,241,0.4) 0%, rgba(139,92,246,0.4) 100%)',
+                      background:
+                        'linear-gradient(135deg, rgba(99,102,241,0.4) 0%, rgba(139,92,246,0.4) 100%)',
                       border: '1px solid rgba(139,92,246,0.3)',
                       boxShadow: '0 0 12px rgba(139,92,246,0.2)',
                     }}
@@ -260,7 +266,8 @@ export default function AnalyticsPage() {
               <div
                 className="p-5 rounded-2xl"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
+                  background:
+                    'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
                   border: '1px solid rgba(255,255,255,0.08)',
                   backdropFilter: 'blur(24px)',
                   WebkitBackdropFilter: 'blur(24px)',
@@ -271,7 +278,8 @@ export default function AnalyticsPage() {
                   <div
                     className="flex items-center justify-center w-10 h-10 rounded-xl"
                     style={{
-                      background: 'linear-gradient(135deg, rgba(34,197,94,0.4) 0%, rgba(74,222,128,0.4) 100%)',
+                      background:
+                        'linear-gradient(135deg, rgba(34,197,94,0.4) 0%, rgba(74,222,128,0.4) 100%)',
                       border: '1px solid rgba(34,197,94,0.3)',
                       boxShadow: '0 0 12px rgba(34,197,94,0.2)',
                     }}
@@ -284,7 +292,12 @@ export default function AnalyticsPage() {
                 </div>
                 <p className="text-3xl font-bold" style={{ color: 'rgba(74,222,128,0.95)' }}>
                   {analytics.moodAnalytics.averageMood.toFixed(1)}
-                  <span className="text-lg font-normal ml-1" style={{ color: 'rgba(255,255,255,0.4)' }}>/10</span>
+                  <span
+                    className="text-lg font-normal ml-1"
+                    style={{ color: 'rgba(255,255,255,0.4)' }}
+                  >
+                    /10
+                  </span>
                 </p>
               </div>
 
@@ -292,7 +305,8 @@ export default function AnalyticsPage() {
               <div
                 className="p-5 rounded-2xl"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
+                  background:
+                    'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
                   border: '1px solid rgba(255,255,255,0.08)',
                   backdropFilter: 'blur(24px)',
                   WebkitBackdropFilter: 'blur(24px)',
@@ -303,7 +317,8 @@ export default function AnalyticsPage() {
                   <div
                     className="flex items-center justify-center w-10 h-10 rounded-xl"
                     style={{
-                      background: 'linear-gradient(135deg, rgba(249,115,22,0.4) 0%, rgba(251,146,60,0.4) 100%)',
+                      background:
+                        'linear-gradient(135deg, rgba(249,115,22,0.4) 0%, rgba(251,146,60,0.4) 100%)',
                       border: '1px solid rgba(249,115,22,0.3)',
                       boxShadow: '0 0 12px rgba(249,115,22,0.2)',
                     }}
@@ -314,7 +329,10 @@ export default function AnalyticsPage() {
                     Top Trigger
                   </p>
                 </div>
-                <p className="text-xl font-bold capitalize truncate" style={{ color: 'rgba(255,255,255,0.95)' }}>
+                <p
+                  className="text-xl font-bold capitalize truncate"
+                  style={{ color: 'rgba(255,255,255,0.95)' }}
+                >
                   {analytics.moodAnalytics.topTriggers[0]?.trigger || 'None'}
                 </p>
               </div>
@@ -323,7 +341,8 @@ export default function AnalyticsPage() {
               <div
                 className="p-5 rounded-2xl"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
+                  background:
+                    'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
                   border: '1px solid rgba(255,255,255,0.08)',
                   backdropFilter: 'blur(24px)',
                   WebkitBackdropFilter: 'blur(24px)',
@@ -334,7 +353,8 @@ export default function AnalyticsPage() {
                   <div
                     className="flex items-center justify-center w-10 h-10 rounded-xl"
                     style={{
-                      background: 'linear-gradient(135deg, rgba(20,184,166,0.4) 0%, rgba(6,182,212,0.4) 100%)',
+                      background:
+                        'linear-gradient(135deg, rgba(20,184,166,0.4) 0%, rgba(6,182,212,0.4) 100%)',
                       border: '1px solid rgba(20,184,166,0.3)',
                       boxShadow: '0 0 12px rgba(20,184,166,0.2)',
                     }}
@@ -345,7 +365,10 @@ export default function AnalyticsPage() {
                     Best Activity
                   </p>
                 </div>
-                <p className="text-xl font-bold capitalize truncate" style={{ color: 'rgba(255,255,255,0.95)' }}>
+                <p
+                  className="text-xl font-bold capitalize truncate"
+                  style={{ color: 'rgba(255,255,255,0.95)' }}
+                >
                   {analytics.moodAnalytics.topActivities[0]?.activity || 'None'}
                 </p>
               </div>
@@ -355,7 +378,8 @@ export default function AnalyticsPage() {
             <div
               className="rounded-2xl overflow-hidden"
               style={{
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
+                background:
+                  'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
                 border: '1px solid rgba(255,255,255,0.08)',
                 backdropFilter: 'blur(24px)',
                 WebkitBackdropFilter: 'blur(24px)',
@@ -369,7 +393,8 @@ export default function AnalyticsPage() {
                 <div
                   className="flex items-center justify-center w-8 h-8 rounded-lg"
                   style={{
-                    background: 'linear-gradient(135deg, rgba(168,85,247,0.4) 0%, rgba(192,132,252,0.4) 100%)',
+                    background:
+                      'linear-gradient(135deg, rgba(168,85,247,0.4) 0%, rgba(192,132,252,0.4) 100%)',
                     border: '1px solid rgba(168,85,247,0.3)',
                     boxShadow: '0 0 8px rgba(168,85,247,0.15)',
                   }}
@@ -383,24 +408,32 @@ export default function AnalyticsPage() {
 
               <div className="p-6">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {Object.entries(analytics.moodAnalytics.timeOfDayDistribution).map(([time, count]) => (
-                    <div
-                      key={time}
-                      className="p-4 rounded-xl text-center"
-                      style={{
-                        background: 'rgba(255,255,255,0.03)',
-                        border: '1px solid rgba(255,255,255,0.06)',
-                      }}
-                    >
-                      <div className="text-4xl mb-2">{getTimeEmoji(time)}</div>
-                      <div className="text-sm capitalize mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                        {time}
+                  {Object.entries(analytics.moodAnalytics.timeOfDayDistribution).map(
+                    ([time, count]) => (
+                      <div
+                        key={time}
+                        className="p-4 rounded-xl text-center"
+                        style={{
+                          background: 'rgba(255,255,255,0.03)',
+                          border: '1px solid rgba(255,255,255,0.06)',
+                        }}
+                      >
+                        <div className="text-4xl mb-2">{getTimeEmoji(time)}</div>
+                        <div
+                          className="text-sm capitalize mb-1"
+                          style={{ color: 'rgba(255,255,255,0.5)' }}
+                        >
+                          {time}
+                        </div>
+                        <div
+                          className="text-2xl font-bold"
+                          style={{ color: 'rgba(255,255,255,0.9)' }}
+                        >
+                          {count}
+                        </div>
                       </div>
-                      <div className="text-2xl font-bold" style={{ color: 'rgba(255,255,255,0.9)' }}>
-                        {count}
-                      </div>
-                    </div>
-                  ))}
+                    )
+                  )}
                 </div>
               </div>
             </div>
@@ -412,7 +445,8 @@ export default function AnalyticsPage() {
                 <div
                   className="rounded-2xl overflow-hidden"
                   style={{
-                    background: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
+                    background:
+                      'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
                     border: '1px solid rgba(255,255,255,0.08)',
                     backdropFilter: 'blur(24px)',
                     WebkitBackdropFilter: 'blur(24px)',
@@ -426,14 +460,21 @@ export default function AnalyticsPage() {
                     <div
                       className="flex items-center justify-center w-8 h-8 rounded-lg"
                       style={{
-                        background: 'linear-gradient(135deg, rgba(249,115,22,0.4) 0%, rgba(251,146,60,0.4) 100%)',
+                        background:
+                          'linear-gradient(135deg, rgba(249,115,22,0.4) 0%, rgba(251,146,60,0.4) 100%)',
                         border: '1px solid rgba(249,115,22,0.3)',
                         boxShadow: '0 0 8px rgba(249,115,22,0.15)',
                       }}
                     >
-                      <AlertTriangle className="h-4 w-4" style={{ color: 'rgba(255,255,255,0.8)' }} />
+                      <AlertTriangle
+                        className="h-4 w-4"
+                        style={{ color: 'rgba(255,255,255,0.8)' }}
+                      />
                     </div>
-                    <h2 className="text-base font-semibold" style={{ color: 'rgba(255,255,255,0.85)' }}>
+                    <h2
+                      className="text-base font-semibold"
+                      style={{ color: 'rgba(255,255,255,0.85)' }}
+                    >
                       Top Triggers
                     </h2>
                   </div>
@@ -450,7 +491,10 @@ export default function AnalyticsPage() {
                           }}
                         >
                           <div className="flex items-center justify-between mb-2">
-                            <p className="font-semibold capitalize" style={{ color: 'rgba(255,255,255,0.85)' }}>
+                            <p
+                              className="font-semibold capitalize"
+                              style={{ color: 'rgba(255,255,255,0.85)' }}
+                            >
                               {trigger.trigger}
                             </p>
                             <span
@@ -469,7 +513,10 @@ export default function AnalyticsPage() {
                               {trigger.frequency} occurrences
                             </span>
                             <span style={{ color: 'rgba(255,255,255,0.4)' }}>
-                              Impact: <span style={{ color: 'rgba(249,115,22,0.8)' }}>{trigger.averageImpact.toFixed(1)}/10</span>
+                              Impact:{' '}
+                              <span style={{ color: 'rgba(249,115,22,0.8)' }}>
+                                {trigger.averageImpact.toFixed(1)}/10
+                              </span>
                             </span>
                           </div>
                         </div>
@@ -484,7 +531,8 @@ export default function AnalyticsPage() {
                 <div
                   className="rounded-2xl overflow-hidden"
                   style={{
-                    background: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
+                    background:
+                      'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
                     border: '1px solid rgba(255,255,255,0.08)',
                     backdropFilter: 'blur(24px)',
                     WebkitBackdropFilter: 'blur(24px)',
@@ -498,14 +546,18 @@ export default function AnalyticsPage() {
                     <div
                       className="flex items-center justify-center w-8 h-8 rounded-lg"
                       style={{
-                        background: 'linear-gradient(135deg, rgba(34,197,94,0.4) 0%, rgba(74,222,128,0.4) 100%)',
+                        background:
+                          'linear-gradient(135deg, rgba(34,197,94,0.4) 0%, rgba(74,222,128,0.4) 100%)',
                         border: '1px solid rgba(34,197,94,0.3)',
                         boxShadow: '0 0 8px rgba(34,197,94,0.15)',
                       }}
                     >
                       <Activity className="h-4 w-4" style={{ color: 'rgba(255,255,255,0.8)' }} />
                     </div>
-                    <h2 className="text-base font-semibold" style={{ color: 'rgba(255,255,255,0.85)' }}>
+                    <h2
+                      className="text-base font-semibold"
+                      style={{ color: 'rgba(255,255,255,0.85)' }}
+                    >
                       Most Effective Activities
                     </h2>
                   </div>
@@ -522,10 +574,16 @@ export default function AnalyticsPage() {
                           }}
                         >
                           <div className="flex items-center justify-between mb-3">
-                            <p className="font-semibold capitalize" style={{ color: 'rgba(255,255,255,0.85)' }}>
+                            <p
+                              className="font-semibold capitalize"
+                              style={{ color: 'rgba(255,255,255,0.85)' }}
+                            >
                               {activity.activity}
                             </p>
-                            <span className="text-sm font-medium" style={{ color: 'rgba(74,222,128,0.9)' }}>
+                            <span
+                              className="text-sm font-medium"
+                              style={{ color: 'rgba(74,222,128,0.9)' }}
+                            >
                               {(activity.effectiveness * 100).toFixed(0)}%
                             </span>
                           </div>
@@ -538,7 +596,8 @@ export default function AnalyticsPage() {
                                 className="h-full rounded-full transition-all duration-500"
                                 style={{
                                   width: `${activity.effectiveness * 100}%`,
-                                  background: 'linear-gradient(90deg, rgba(34,197,94,0.6) 0%, rgba(74,222,128,0.8) 100%)',
+                                  background:
+                                    'linear-gradient(90deg, rgba(34,197,94,0.6) 0%, rgba(74,222,128,0.8) 100%)',
                                   boxShadow: '0 0 8px rgba(34,197,94,0.4)',
                                 }}
                               />
@@ -560,7 +619,8 @@ export default function AnalyticsPage() {
               <div
                 className="rounded-2xl overflow-hidden"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
+                  background:
+                    'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
                   border: '1px solid rgba(255,255,255,0.08)',
                   backdropFilter: 'blur(24px)',
                   WebkitBackdropFilter: 'blur(24px)',
@@ -574,14 +634,18 @@ export default function AnalyticsPage() {
                   <div
                     className="flex items-center justify-center w-8 h-8 rounded-lg"
                     style={{
-                      background: 'linear-gradient(135deg, rgba(59,130,246,0.4) 0%, rgba(96,165,250,0.4) 100%)',
+                      background:
+                        'linear-gradient(135deg, rgba(59,130,246,0.4) 0%, rgba(96,165,250,0.4) 100%)',
                       border: '1px solid rgba(59,130,246,0.3)',
                       boxShadow: '0 0 8px rgba(59,130,246,0.15)',
                     }}
                   >
                     <TrendingUp className="h-4 w-4" style={{ color: 'rgba(255,255,255,0.8)' }} />
                   </div>
-                  <h2 className="text-base font-semibold" style={{ color: 'rgba(255,255,255,0.85)' }}>
+                  <h2
+                    className="text-base font-semibold"
+                    style={{ color: 'rgba(255,255,255,0.85)' }}
+                  >
                     AI Insights
                   </h2>
                 </div>
@@ -602,38 +666,49 @@ export default function AnalyticsPage() {
                             className="flex items-center justify-center w-6 h-6 rounded-lg flex-shrink-0 mt-0.5"
                             style={{
                               background:
-                             insight.type === 'mood_improvement' ||
-                             insight.type === 'activity_effective'
-                              ? 'rgba(34,197,94,0.2)'
-                              : insight.type === 'risk_alert' ||
-                                insight.type === 'trigger_identified'
-                              ? 'rgba(234,179,8,0.2)'
-                              : 'rgba(59,130,246,0.2)',
-                              border:insight.type === 'mood_improvement' ||
-                              insight.type === 'activity_effective'
-                               ? '1px solid rgba(34,197,94,0.3)'
-                               : insight.type === 'risk_alert' ||
-                               insight.type === 'trigger_identified'
-                                ? '1px solid rgba(234,179,8,0.3)'
-                              : '1px solid rgba(59,130,246,0.3)',
+                                insight.type === 'mood_improvement' ||
+                                insight.type === 'activity_effective'
+                                  ? 'rgba(34,197,94,0.2)'
+                                  : insight.type === 'risk_alert' ||
+                                      insight.type === 'trigger_identified'
+                                    ? 'rgba(234,179,8,0.2)'
+                                    : 'rgba(59,130,246,0.2)',
+                              border:
+                                insight.type === 'mood_improvement' ||
+                                insight.type === 'activity_effective'
+                                  ? '1px solid rgba(34,197,94,0.3)'
+                                  : insight.type === 'risk_alert' ||
+                                      insight.type === 'trigger_identified'
+                                    ? '1px solid rgba(234,179,8,0.3)'
+                                    : '1px solid rgba(59,130,246,0.3)',
                             }}
                           >
-                            <Sparkles className="h-3.5 w-3.5" style={{
-                            color:insight.type === 'mood_improvement' ||
-                             insight.type === 'activity_effective'
-                            ? 'rgba(74,222,128,0.9)'
-                             : insight.type === 'risk_alert' ||
-                             insight.type === 'trigger_identified'
-                             ? 'rgba(250,204,21,0.9)'
-                             : 'rgba(96,165,250,0.9)',
-                            }} />
+                            <Sparkles
+                              className="h-3.5 w-3.5"
+                              style={{
+                                color:
+                                  insight.type === 'mood_improvement' ||
+                                  insight.type === 'activity_effective'
+                                    ? 'rgba(74,222,128,0.9)'
+                                    : insight.type === 'risk_alert' ||
+                                        insight.type === 'trigger_identified'
+                                      ? 'rgba(250,204,21,0.9)'
+                                      : 'rgba(96,165,250,0.9)',
+                              }}
+                            />
                           </div>
                           <div className="flex-1">
-                            <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                            <p
+                              className="text-sm leading-relaxed"
+                              style={{ color: 'rgba(255,255,255,0.7)' }}
+                            >
                               {(insight as any).message || insight.description || insight.title}
                             </p>
                             {((insight as any).recommendation || insight.recommendations?.[0]) && (
-                              <p className="text-xs mt-2 italic" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                              <p
+                                className="text-xs mt-2 italic"
+                                style={{ color: 'rgba(255,255,255,0.4)' }}
+                              >
                                 💡 {(insight as any).recommendation || insight.recommendations?.[0]}
                               </p>
                             )}
@@ -653,7 +728,8 @@ export default function AnalyticsPage() {
           <div
             className="rounded-2xl p-12 text-center"
             style={{
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
+              background:
+                'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
               border: '1px solid rgba(255,255,255,0.08)',
               backdropFilter: 'blur(24px)',
               WebkitBackdropFilter: 'blur(24px)',
@@ -679,7 +755,8 @@ export default function AnalyticsPage() {
               onClick={() => router.push('/mood')}
               className="px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 hover:scale-[1.02]"
               style={{
-                background: 'linear-gradient(135deg, rgba(99,102,241,0.5) 0%, rgba(139,92,246,0.5) 100%)',
+                background:
+                  'linear-gradient(135deg, rgba(99,102,241,0.5) 0%, rgba(139,92,246,0.5) 100%)',
                 border: '1px solid rgba(139,92,246,0.35)',
                 color: 'rgba(255,255,255,0.9)',
                 boxShadow: '0 4px 20px rgba(99,102,241,0.25), inset 0 1px 0 rgba(255,255,255,0.1)',

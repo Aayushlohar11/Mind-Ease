@@ -36,10 +36,7 @@ export async function validateBody<T>(
 
     return {
       success: false,
-      error: NextResponse.json(
-        { error: 'Invalid request body' },
-        { status: 400 }
-      ),
+      error: NextResponse.json({ error: 'Invalid request body' }, { status: 400 }),
     }
   }
 }
@@ -80,10 +77,7 @@ export function validateQuery<T>(
 
     return {
       success: false,
-      error: NextResponse.json(
-        { error: 'Invalid query parameters' },
-        { status: 400 }
-      ),
+      error: NextResponse.json({ error: 'Invalid query parameters' }, { status: 400 }),
     }
   }
 }
@@ -109,9 +103,7 @@ export function sanitizeObject<T extends Record<string, any>>(obj: T): T {
     if (typeof value === 'string') {
       sanitized[key] = sanitizeString(value)
     } else if (Array.isArray(value)) {
-      sanitized[key] = value.map((item) =>
-        typeof item === 'string' ? sanitizeString(item) : item
-      )
+      sanitized[key] = value.map((item) => (typeof item === 'string' ? sanitizeString(item) : item))
     } else if (typeof value === 'object' && value !== null) {
       sanitized[key] = sanitizeObject(value)
     } else {

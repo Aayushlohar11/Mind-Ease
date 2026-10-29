@@ -1,3 +1,1 @@
-import { GET as handler } from '@backend/api/socket/route'
-
-export const GET = handler
+export { GET } from '@backend/api/socket/route'

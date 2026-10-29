@@ -11,16 +11,18 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
 
     // Validate request
-    if (!body.userId || !body.contentId || !body.interactionType) {
+    if (!body.contentId || !body.interactionType) {
       return NextResponse.json(
-        { error: 'User ID, content ID, and interaction type are required' },
+        { error: 'Content ID and interaction type are required' },
         { status: 400 }
       )
     }
 
+    const userId = body.userId || 'anonymous'
+
     // Record interaction
     const interaction = await recordInteraction(
-      body.userId,
+      userId,
       body.contentId,
       body.interactionType,
       body.metadata

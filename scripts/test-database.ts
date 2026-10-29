@@ -3,7 +3,7 @@
  * Tests PostgreSQL connection and basic operations
  */
 
-import { testConnection, initializeDatabase, healthCheck, query, closePool } from '../lib/database'
+import { testConnection, initializeDatabase, healthCheck, query, closePool } from '@backend/db'
 import * as dotenv from 'dotenv'
 import { resolve } from 'path'
 
@@ -17,7 +17,7 @@ async function testDatabase() {
     // Test 1: Basic Connection
     console.log('Test 1: Basic Connection')
     const connected = await testConnection()
-    
+
     if (!connected) {
       console.error('❌ Failed to connect to database')
       console.log('\n📝 Troubleshooting:')
@@ -65,37 +65,49 @@ async function testDatabase() {
 
     // Test 4: Test CRUD Operations
     console.log('\nTest 4: Testing CRUD Operations')
-    
+
     // Insert test user
     const testEmail = `test_${Date.now()}@example.com`
-    const insertResult = await query(`
+    const insertResult = await query(
+      `
       INSERT INTO users (email, name, password_hash)
       VALUES ($1, $2, $3)
       RETURNING id, email, name
-    `, [testEmail, 'Test User', 'test_hash'])
+    `,
+      [testEmail, 'Test User', 'test_hash']
+    )
 
     const testUser = insertResult.rows[0]
     console.log('   ✅ INSERT: Created test user:', testUser.email)
 
     // Read test user
-    const selectResult = await query(`
+    const selectResult = await query(
+      `
       SELECT id, email, name FROM users WHERE id = $1
-    `, [testUser.id])
+    `,
+      [testUser.id]
+    )
 
     if (selectResult.rows.length > 0) {
       console.log('   ✅ SELECT: Retrieved test user:', selectResult.rows[0].email)
     }
 
     // Update test user
-    await query(`
+    await query(
+      `
       UPDATE users SET name = $1 WHERE id = $2
-    `, ['Updated Test User', testUser.id])
+    `,
+      ['Updated Test User', testUser.id]
+    )
     console.log('   ✅ UPDATE: Updated test user name')
 
     // Delete test user
-    await query(`
+    await query(
+      `
       DELETE FROM users WHERE id = $1
-    `, [testUser.id])
+    `,
+      [testUser.id]
+    )
     console.log('   ✅ DELETE: Deleted test user')
 
     // Test 5: Test Indexes
@@ -168,7 +180,10 @@ async function testDatabase() {
     const poolHealth = await healthCheck()
     console.log('   Total Connections:', poolHealth.details.poolSize)
     console.log('   Idle Connections:', poolHealth.details.idleConnections)
-    console.log('   Active Connections:', poolHealth.details.poolSize - poolHealth.details.idleConnections)
+    console.log(
+      '   Active Connections:',
+      poolHealth.details.poolSize - poolHealth.details.idleConnections
+    )
     console.log('   Waiting Clients:', poolHealth.details.waitingClients)
 
     // Success!
@@ -178,7 +193,6 @@ async function testDatabase() {
     console.log('   1. Start your application: npm run dev')
     console.log('   2. Test features in the browser')
     console.log('   3. Monitor database performance')
-
   } catch (error) {
     console.error('\n❌ Database test failed:', error)
     console.log('\n📝 Troubleshooting:')

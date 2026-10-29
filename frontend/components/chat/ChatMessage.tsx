@@ -7,7 +7,7 @@
 
 import React from 'react'
 import { cn } from '@frontend/lib/utils'
-import type { Message } from '@backend/types/message'
+import type { Message } from '@shared/types/message'
 import { format } from 'date-fns'
 
 interface ChatMessageProps {
@@ -61,14 +61,17 @@ export function ChatMessage({ message, isLoading = false }: ChatMessageProps) {
             style={
               isUser
                 ? {
-                    background: 'linear-gradient(135deg, rgba(59,130,246,0.35) 0%, rgba(99,102,241,0.3) 100%)',
+                    background:
+                      'linear-gradient(135deg, rgba(59,130,246,0.35) 0%, rgba(99,102,241,0.3) 100%)',
                     border: '1px solid rgba(59,130,246,0.25)',
                     backdropFilter: 'blur(16px)',
                     WebkitBackdropFilter: 'blur(16px)',
-                    boxShadow: '0 4px 16px rgba(59,130,246,0.15), inset 0 1px 0 rgba(255,255,255,0.1)',
+                    boxShadow:
+                      '0 4px 16px rgba(59,130,246,0.15), inset 0 1px 0 rgba(255,255,255,0.1)',
                   }
                 : {
-                    background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%)',
+                    background:
+                      'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%)',
                     border: '1px solid rgba(255,255,255,0.1)',
                     backdropFilter: 'blur(16px)',
                     WebkitBackdropFilter: 'blur(16px)',
@@ -108,7 +111,9 @@ export function ChatMessage({ message, isLoading = false }: ChatMessageProps) {
           >
             <span>{format(new Date(message.timestamp), 'h:mm a')}</span>
             {message.status === 'error' && <span className="text-red-400/80">Failed to send</span>}
-            {message.status === 'sending' && <span style={{ color: 'rgba(255,255,255,0.2)' }}>Sending...</span>}
+            {message.status === 'sending' && (
+              <span style={{ color: 'rgba(255,255,255,0.2)' }}>Sending...</span>
+            )}
           </div>
 
           {/* Sentiment Indicator (optional) - glass pill */}

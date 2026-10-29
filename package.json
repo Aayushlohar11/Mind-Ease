@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "dev:custom": "tsx backend/server.ts",
+    "dev:custom": "tsx backend/websocket/server.ts",
     "build": "next build",
     "start": "next start",
-    "start:custom": "NODE_ENV=production tsx backend/server.ts",
+    "start:custom": "NODE_ENV=production tsx backend/websocket/server.ts",
     "lint": "next lint",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
     "test": "vitest run",
@@ -18,9 +18,9 @@
     "test:ai": "tsx scripts/test-ai-personality.ts",
     "test:database": "tsx scripts/test-database.ts",
     "db:test": "tsx scripts/test-database.ts",
-    "db:setup": "tsx backend/scripts/setup-database.ts",
+    "db:setup": "tsx scripts/setup-database.ts",
     "db:migrate": "psql -d mindease_db -f database/schema.sql",
-    "setup:env": "tsx backend/scripts/setup-env.ts"
+    "setup:env": "tsx scripts/setup-env.ts"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.0.5",
@@ -37,8 +37,6 @@
     "date-fns": "^3.3.1",
     "jsonwebtoken": "^9.0.3",
     "lucide-react": "^0.344.0",
-    "mongodb": "^7.5.0",
-    "mongoose": "^9.7.4",
     "next": "^14.2.0",
     "next-auth": "^4.24.14",
     "nodemailer": "^7.0.13",

@@ -3,8 +3,8 @@
  * Tests the human-like, creative, and empathetic responses
  */
 
-import { generateChatResponse, createMessage } from '../backend/services/ai-chat.service'
-import type { Message } from '../backend/types/message'
+import { generateChatResponse, createMessage } from '@backend/services/ai-chat.service'
+import type { Message } from '@shared/types/message'
 
 // Test scenarios to verify human-like personality
 const testScenarios = [
@@ -42,7 +42,7 @@ const testScenarios = [
 
 async function testAIPersonality() {
   console.log('🧪 Testing AI Personality Enhancements\n')
-  console.log('=' .repeat(80))
+  console.log('='.repeat(80))
   console.log('\n')
 
   for (const scenario of testScenarios) {
@@ -72,9 +72,9 @@ async function testAIPersonality() {
     }
 
     console.log('\n' + '='.repeat(80))
-    
+
     // Wait a bit between requests to avoid rate limiting
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    await new Promise((resolve) => setTimeout(resolve, 1000))
   }
 
   console.log('\n\n✨ Testing Complete!\n')
@@ -92,7 +92,7 @@ async function testAIPersonality() {
 // Test conversation continuity
 async function testConversationContinuity() {
   console.log('\n\n🔄 Testing Conversation Continuity\n')
-  console.log('=' .repeat(80))
+  console.log('='.repeat(80))
 
   const conversationHistory: Message[] = []
   const sessionId = 'test_session_' + Date.now()
@@ -100,7 +100,7 @@ async function testConversationContinuity() {
   const conversationFlow = [
     "Hi, I'm feeling anxious",
     "It's about my job. I'm worried I'm not good enough.",
-    "Yeah, I guess I do tend to be hard on myself.",
+    'Yeah, I guess I do tend to be hard on myself.',
     "That's a good point. Maybe I should focus on what I've accomplished.",
   ]
 
@@ -109,9 +109,7 @@ async function testConversationContinuity() {
     console.log(`\n👤 User (Message ${i + 1}): "${userMessage}"`)
 
     // Add user message to history
-    conversationHistory.push(
-      createMessage(userMessage, 'user', sessionId)
-    )
+    conversationHistory.push(createMessage(userMessage, 'user', sessionId))
 
     try {
       const response = await generateChatResponse(userMessage, conversationHistory)
@@ -120,9 +118,7 @@ async function testConversationContinuity() {
         console.log(`\n🤖 Alex: ${response.data}`)
 
         // Add AI response to history
-        conversationHistory.push(
-          createMessage(response.data, 'assistant', sessionId)
-        )
+        conversationHistory.push(createMessage(response.data, 'assistant', sessionId))
       } else {
         console.log(`❌ Error: ${response.error?.message}`)
       }
@@ -131,7 +127,7 @@ async function testConversationContinuity() {
     }
 
     console.log('\n' + '-'.repeat(80))
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    await new Promise((resolve) => setTimeout(resolve, 1000))
   }
 
   console.log('\n\n✅ Conversation Continuity Test Complete!')

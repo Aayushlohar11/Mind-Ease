@@ -76,7 +76,8 @@ export function ChatInput({
       onSubmit={handleSubmit}
       className={cn('flex flex-col gap-2 p-4', className)}
       style={{
-        background: 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)',
+        background:
+          'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)',
         borderTop: '1px solid rgba(255,255,255,0.06)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
@@ -88,12 +89,8 @@ export function ChatInput({
           disabled && 'opacity-50 cursor-not-allowed'
         )}
         style={{
-          background: isFocused
-            ? 'rgba(255,255,255,0.08)'
-            : 'rgba(255,255,255,0.04)',
-          border: isFocused
-            ? '1px solid rgba(139,92,246,0.3)'
-            : '1px solid rgba(255,255,255,0.08)',
+          background: isFocused ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.04)',
+          border: isFocused ? '1px solid rgba(139,92,246,0.3)' : '1px solid rgba(255,255,255,0.08)',
           boxShadow: isFocused
             ? '0 0 0 3px rgba(139,92,246,0.08), 0 4px 16px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.06)'
             : '0 2px 8px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.04)',
@@ -135,9 +132,11 @@ export function ChatInput({
           style={
             isMessageValid && !isLoading
               ? {
-                  background: 'linear-gradient(135deg, rgba(99,102,241,0.6) 0%, rgba(139,92,246,0.6) 100%)',
+                  background:
+                    'linear-gradient(135deg, rgba(99,102,241,0.6) 0%, rgba(139,92,246,0.6) 100%)',
                   border: '1px solid rgba(139,92,246,0.4)',
-                  boxShadow: '0 4px 16px rgba(99,102,241,0.3), inset 0 1px 0 rgba(255,255,255,0.15)',
+                  boxShadow:
+                    '0 4px 16px rgba(99,102,241,0.3), inset 0 1px 0 rgba(255,255,255,0.15)',
                 }
               : {
                   background: 'rgba(255,255,255,0.06)',
@@ -149,7 +148,10 @@ export function ChatInput({
           {isLoading ? (
             <Loader2 className="h-4 w-4 animate-spin" style={{ color: 'rgba(255,255,255,0.5)' }} />
           ) : (
-            <Send className="h-4 w-4" style={{ color: isMessageValid ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.25)' }} />
+            <Send
+              className="h-4 w-4"
+              style={{ color: isMessageValid ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.25)' }}
+            />
           )}
         </button>
       </div>
@@ -159,7 +161,9 @@ export function ChatInput({
         <div className="flex justify-end px-1">
           <span
             className="text-xs"
-            style={{ color: characterCount > maxLength ? 'rgba(248,113,113,0.8)' : 'rgba(255,255,255,0.3)' }}
+            style={{
+              color: characterCount > maxLength ? 'rgba(248,113,113,0.8)' : 'rgba(255,255,255,0.3)',
+            }}
           >
             {characterCount} / {maxLength}
           </span>

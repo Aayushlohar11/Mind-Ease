@@ -1,3 +1,1 @@
-import { POST as handler } from '@backend/api/analytics/route'
-
-export const POST = handler
+export { POST } from '@backend/api/analytics/route'

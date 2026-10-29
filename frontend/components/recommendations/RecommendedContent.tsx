@@ -6,7 +6,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import type { Recommendation } from '@backend/types/recommendation'
+import type { Recommendation } from '@shared/types/recommendation'
 import { ContentCard } from './ContentCard'
 import { Button } from '@frontend/components/ui/button'
 import { Card } from '@frontend/components/ui/card'

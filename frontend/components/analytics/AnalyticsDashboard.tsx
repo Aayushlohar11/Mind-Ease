@@ -6,7 +6,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import type { Analytics } from '@backend/types/analytics'
+import type { Analytics } from '@shared/types/analytics'
 import { Card } from '@frontend/components/ui/card'
 import { Button } from '@frontend/components/ui/button'
 import { TrendChart } from './TrendChart'

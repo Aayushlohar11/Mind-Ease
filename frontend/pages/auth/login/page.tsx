@@ -6,8 +6,8 @@ import Link from 'next/link'
 import { Suspense } from 'react'
 import { Button } from '@frontend/components/ui/button'
 import { Input } from '@frontend/components/ui/input'
-import { AuthLayout } from '@frontend/components/portfolio/AuthLayout'
-import OTPInput from '@/frontend/components/OTPInput'
+import { AuthLayout } from '@frontend/components/auth/AuthLayout'
+import { OTPInput } from '@frontend/components/auth'
 
 type Step = 'email' | 'otp'
 
@@ -261,7 +261,11 @@ function LoginForm() {
             </button>
           </div>
           <p className="text-amber-300/80 leading-relaxed">
-            Email service not configured. Your verification code is <strong className="font-mono text-white text-sm tracking-wider px-1 bg-white/10 rounded">{devOtp}</strong> (or enter <strong>123456</strong>).
+            Email service not configured. Your verification code is{' '}
+            <strong className="font-mono text-white text-sm tracking-wider px-1 bg-white/10 rounded">
+              {devOtp}
+            </strong>{' '}
+            (or enter <strong>123456</strong>).
           </p>
         </div>
       )}

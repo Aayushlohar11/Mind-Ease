@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { ChatContainer } from '@frontend/components/chat/ChatContainer'
-import type { Message } from '@backend/types/message'
+import type { Message } from '@shared/types/message'
 
 export default function ChatPage() {
   const { data: session, status } = useSession()

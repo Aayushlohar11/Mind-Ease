@@ -4,7 +4,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { auth } from '@backend/lib/auth'
+import { auth } from '@backend/auth/auth'
 import {
   createMoodEntry,
   deleteMoodEntry,
@@ -13,7 +13,7 @@ import {
   getMoodTrends,
   updateMoodEntry,
 } from '@backend/services/mood.service'
-import type { MoodEntryInput } from '@backend/types/mood'
+import type { MoodEntryInput } from '@shared/types/mood'
 
 /**
  * GET /api/mood - Get mood history

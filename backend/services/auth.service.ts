@@ -12,8 +12,8 @@ import {
   isValidEmail,
   isValidPassword,
   verifyToken,
-} from '@backend/lib/auth-utils'
-import type { User, AuthCredentials, AuthResponse } from '@backend/types/user'
+} from '@backend/auth/auth-utils'
+import type { User, AuthCredentials, AuthResponse } from '@shared/types/user'
 import { getUserByEmail, createUser, getUserById } from './user.service'
 
 export interface SignupData extends AuthCredentials {
@@ -69,7 +69,7 @@ export async function signup(data: SignupData): Promise<AuthResponse> {
 
   console.log(`✓ Validation passed`)
   console.log(`🔐 Hashing password...`)
-  
+
   // Hash password
   const hashedPassword = await hashPassword(password)
   console.log(`✓ Password hashed (length: ${hashedPassword.length})`)
@@ -119,7 +119,7 @@ export async function login(credentials: AuthCredentials): Promise<AuthResponse>
 
   console.log(`✓ User found: ${user.email} (ID: ${user.id})`)
   console.log(`   Has password hash: ${!!user.passwordHash}`)
-  
+
   if (user.passwordHash) {
     console.log(`   Hash length: ${user.passwordHash.length}`)
     console.log(`   Hash starts with: ${user.passwordHash.substring(0, 7)}`)
@@ -134,7 +134,7 @@ export async function login(credentials: AuthCredentials): Promise<AuthResponse>
   console.log(`🔍 Verifying password...`)
   const isPasswordValid = await verifyPassword(password, user.passwordHash)
   console.log(`   Verification result: ${isPasswordValid}`)
-  
+
   if (!isPasswordValid) {
     console.log(`❌ Password verification failed`)
     throw new AuthError('Invalid email or password', 'INVALID_CREDENTIALS')

@@ -22,7 +22,7 @@ import {
 import { Button } from '@frontend/components/ui/button'
 import { Input } from '@frontend/components/ui/input'
 import { PortfolioBackground } from '@frontend/components/portfolio/PortfolioBackground'
-import type { UserPreferences, UserProfile } from '@backend/types/user'
+import type { UserPreferences, UserProfile } from '@shared/types/user'
 
 type AccountForm = {
   name: string
