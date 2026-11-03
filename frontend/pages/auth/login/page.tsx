@@ -125,8 +125,13 @@ function LoginForm() {
           callbackUrl,
         })
         console.log('NextAuth signIn result:', signInResult)
+        if (signInResult?.error) {
+          setError(signInResult.error)
+          setIsLoading(false)
+          return
+        }
       } catch (authErr) {
-        console.warn('NextAuth signIn error (falling back to direct redirect):', authErr)
+        console.warn('NextAuth signIn error:', authErr)
       }
 
       // Full navigation to ensure session cookie is read by middleware and dashboard

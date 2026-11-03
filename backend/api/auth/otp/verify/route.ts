@@ -8,7 +8,8 @@ import { verifyOTP } from '@backend/services/otp.service'
 import { getUserByEmail, createUser } from '@backend/services/user.service'
 import { sign } from 'jsonwebtoken'
 
-const JWT_SECRET = process.env.AUTH_TOKEN_SECRET || process.env.NEXTAUTH_SECRET || 'your-secret-key'
+const JWT_SECRET =
+  process.env.AUTH_TOKEN_SECRET || process.env.NEXTAUTH_SECRET || 'default-secret-change-me'
 
 export async function POST(request: NextRequest) {
   try {

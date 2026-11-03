@@ -85,6 +85,7 @@ describe('AI Chat Service', () => {
 
       expect(context.messages).toHaveLength(3) // system + 2 messages
       expect(context.messages[0].role).toBe('system')
+
       expect(context.messages[1].content).toBe('Hello')
       expect(context.messages[2].content).toBe('Hi there!')
     })
