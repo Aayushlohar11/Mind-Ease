@@ -5,6 +5,8 @@
 
 import { NextRequest } from 'next/server'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   // Socket.IO will handle the upgrade
   return new Response('WebSocket endpoint', {

@@ -1071,12 +1071,12 @@ function BreathingPacer({
       {/* Breathing Bubble */}
       <div className="relative h-44 w-44 mx-auto flex items-center justify-center">
         <div
-          className={`absolute inset-0 rounded-full bg-gradient-to-tr from-teal-500/20 to-cyan-400/20 border-2 border-teal-300/40 blur-sm transition-transform duration-[4000ms] ease-in-out ${
+          className={`absolute inset-0 rounded-full bg-gradient-to-tr from-teal-500/20 to-cyan-400/20 border-2 border-teal-300/40 blur-sm transition-transform [transition-duration:4000ms] ease-in-out ${
             isRunning ? phases[phaseIndex].scale : 'scale-100'
           }`}
         />
         <div
-          className={`h-36 w-36 rounded-full border border-teal-300/50 bg-teal-400/10 backdrop-blur-sm flex flex-col items-center justify-center shadow-lg shadow-teal-500/15 transition-transform duration-[4000ms] ease-in-out ${
+          className={`h-36 w-36 rounded-full border border-teal-300/50 bg-teal-400/10 backdrop-blur-sm flex flex-col items-center justify-center shadow-lg shadow-teal-500/15 transition-transform [transition-duration:4000ms] ease-in-out ${
             isRunning ? phases[phaseIndex].scale : 'scale-100'
           }`}
         >

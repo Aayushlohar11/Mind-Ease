@@ -6,6 +6,8 @@ const nextConfig = {
   swcMinify: true,
   transpilePackages: ['frontend', 'backend', 'shared'],
   experimental: {
+    outputFileTracingRoot: path.join(__dirname),
+    serverComponentsExternalPackages: ['pg', 'bcryptjs'],
     serverActions: {
       allowedOrigins: ['localhost:3000', '*.vercel.app'],
     },

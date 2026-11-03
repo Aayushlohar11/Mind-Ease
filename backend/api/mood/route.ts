@@ -15,6 +15,8 @@ import {
 } from '@backend/services/mood.service'
 import type { MoodEntryInput } from '@shared/types/mood'
 
+export const dynamic = 'force-dynamic'
+
 /**
  * GET /api/mood - Get mood history
  */

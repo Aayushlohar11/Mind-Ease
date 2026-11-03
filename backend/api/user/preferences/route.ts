@@ -6,6 +6,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getToken } from 'next-auth/jwt'
 import { getUserPreferences, updateUserPreferences } from '@backend/services/user.service'
 
+export const dynamic = 'force-dynamic'
+
 /**
  * GET /api/user/preferences - Get user preferences
  */

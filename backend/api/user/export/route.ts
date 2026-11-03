@@ -9,6 +9,8 @@ import { getUserById } from '@backend/services/user.service'
 import { getMoodEntries } from '@backend/services/mood.service'
 import { getUserContentHistory } from '@backend/services/recommendation.service'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   try {
     const session = await auth(request)
