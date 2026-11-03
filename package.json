@@ -74,5 +74,9 @@
     "tsx": "^4.22.0",
     "typescript": "^5.3.3",
     "vitest": "^4.1.6"
-  }
+  },
+  "browserslist": [
+    "defaults",
+    "not IE 11"
+  ]
 }
