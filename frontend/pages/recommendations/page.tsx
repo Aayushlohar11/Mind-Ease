@@ -15,6 +15,7 @@ import {
   Headphones,
   Heart,
   Library,
+  Music,
   Pause,
   Phone,
   Play,
@@ -676,7 +677,7 @@ function ResourceCard({
   onBookmark: () => void
   onComplete: () => void
 }) {
-  const Icon = getContentIcon(content.type)
+  const Icon = getContentIcon(content.type, content.tags, content.title, content.audioAmbientType)
 
   return (
     <article className="card-portfolio p-4 sm:p-5 h-full flex flex-col justify-between group hover:border-teal-400/40 transition-all duration-300">
@@ -784,7 +785,7 @@ function InteractiveResourceModal({
   onBookmark: () => void
   onComplete: () => void
 }) {
-  const Icon = getContentIcon(content.type)
+  const Icon = getContentIcon(content.type, content.tags, content.title, content.audioAmbientType)
   const [modalTab, setModalTab] = useState<'practice' | 'guide'>(
     initialInteractive ? 'practice' : 'guide'
   )
@@ -1293,7 +1294,7 @@ function AmbientSoundStudio({
   title,
   onFinish,
 }: {
-  type: 'ocean' | 'rain' | 'forest' | 'binaural'
+  type: 'ocean' | 'rain' | 'forest' | 'binaural' | 'healing'
   durationMinutes: number
   title: string
   onFinish: () => void
@@ -1304,8 +1305,17 @@ function AmbientSoundStudio({
   const audioCtxRef = useRef<AudioContext | null>(null)
   const gainNodeRef = useRef<GainNode | null>(null)
   const noiseSourceRef = useRef<AudioBufferSourceNode | null>(null)
+  const oscillatorsRef = useRef<OscillatorNode[]>([])
 
   const stopAudio = useCallback(() => {
+    oscillatorsRef.current.forEach((osc) => {
+      try {
+        osc.stop()
+        osc.disconnect()
+      } catch {}
+    })
+    oscillatorsRef.current = []
+
     if (noiseSourceRef.current) {
       try {
         noiseSourceRef.current.stop()
@@ -1354,7 +1364,7 @@ function AmbientSoundStudio({
         b3 = 0.8665 * b3 + white * 0.3104856
         b4 = 0.55 * b4 + white * 0.5329522
         b5 = -0.7616 * b5 - white * 0.016898
-        data[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362) * 0.11
+        data[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362) * (type === 'healing' ? 0.04 : 0.11)
         b6 = white * 0.115926
       }
 
@@ -1363,15 +1373,55 @@ function AmbientSoundStudio({
       noise.loop = true
       noiseSourceRef.current = noise
 
-      // Lowpass filter for deep ocean rumble / soothing rain
-      const filter = ctx.createBiquadFilter()
-      filter.type = 'lowpass'
-      filter.frequency.setValueAtTime(type === 'ocean' ? 380 : 550, ctx.currentTime)
-
       // Main Gain
       const gainNode = ctx.createGain()
       gainNode.gain.setValueAtTime(volume, ctx.currentTime)
       gainNodeRef.current = gainNode
+
+      // Lowpass filter for deep ocean rumble / soothing rain / warm healing
+      const filter = ctx.createBiquadFilter()
+      filter.type = 'lowpass'
+      filter.frequency.setValueAtTime(type === 'ocean' ? 380 : type === 'healing' ? 520 : 550, ctx.currentTime)
+
+      // 432Hz Deep Healing Music Synthesizer
+      if (type === 'healing') {
+        const layers = [
+          { freq: 108, type: 'sine' as OscillatorType, vol: 0.18, lfoRate: 0.05 },
+          { freq: 216, type: 'triangle' as OscillatorType, vol: 0.16, lfoRate: 0.08 },
+          { freq: 432, type: 'sine' as OscillatorType, vol: 0.22, lfoRate: 0.06 },
+          { freq: 436, type: 'sine' as OscillatorType, vol: 0.14, lfoRate: 0.07 },
+          { freq: 648, type: 'triangle' as OscillatorType, vol: 0.1, lfoRate: 0.09 },
+        ]
+
+        oscillatorsRef.current = []
+
+        layers.forEach(({ freq, type: oscType, vol, lfoRate }) => {
+          const osc = ctx.createOscillator()
+          osc.type = oscType
+          osc.frequency.setValueAtTime(freq, ctx.currentTime)
+
+          const oscGain = ctx.createGain()
+          oscGain.gain.setValueAtTime(vol, ctx.currentTime)
+
+          const lfo = ctx.createOscillator()
+          lfo.type = 'sine'
+          lfo.frequency.setValueAtTime(lfoRate, ctx.currentTime)
+
+          const lfoGain = ctx.createGain()
+          lfoGain.gain.setValueAtTime(vol * 0.35, ctx.currentTime)
+
+          lfo.connect(lfoGain)
+          lfoGain.connect(oscGain.gain)
+
+          osc.connect(oscGain)
+          oscGain.connect(filter)
+
+          osc.start()
+          lfo.start()
+
+          oscillatorsRef.current.push(osc, lfo)
+        })
+      }
 
       // LFO for slow ocean swells if ocean type
       if (type === 'ocean') {
@@ -1382,6 +1432,7 @@ function AmbientSoundStudio({
         lfo.connect(lfoGain)
         lfoGain.connect(gainNode.gain)
         lfo.start()
+        oscillatorsRef.current.push(lfo)
       }
 
       noise.connect(filter)
@@ -1438,7 +1489,19 @@ function AmbientSoundStudio({
   return (
     <div className="rounded-2xl border border-teal-400/25 bg-teal-500/[0.04] p-5 space-y-5 text-center">
       <div className="flex items-center justify-between text-xs text-muted-foreground">
-        <span className="capitalize">{type} Ambience Session</span>
+        <span className="capitalize flex items-center gap-1.5 font-medium text-teal-300">
+          {type === 'healing' ? (
+            <>
+              <Music className="h-4 w-4 text-emerald-400" />
+              <span className="text-emerald-300">Deep Healing Music (432Hz)</span>
+            </>
+          ) : (
+            <>
+              <Headphones className="h-4 w-4 text-teal-400" />
+              <span>{type} Ambience Session</span>
+            </>
+          )}
+        </span>
         <span className="font-mono text-teal-300">
           {mins}:{secs < 10 ? `0${secs}` : secs}
         </span>
@@ -1449,7 +1512,9 @@ function AmbientSoundStudio({
         {[20, 45, 80, 55, 30, 90, 40, 70, 25, 60, 85, 35].map((h, i) => (
           <div
             key={i}
-            className={`w-1.5 rounded-full bg-teal-400 transition-all duration-300 ${
+            className={`w-1.5 rounded-full ${
+              type === 'healing' ? 'bg-emerald-400' : 'bg-teal-400'
+            } transition-all duration-300 ${
               isPlaying ? 'animate-pulse' : 'opacity-25'
             }`}
             style={{
@@ -1463,10 +1528,26 @@ function AmbientSoundStudio({
       <div className="flex items-center justify-center gap-3">
         <button
           onClick={toggleAudio}
-          className="rounded-xl border border-teal-400/40 bg-teal-400/20 px-6 py-2.5 text-xs sm:text-sm font-semibold text-teal-100 hover:bg-teal-400/30 transition-all flex items-center gap-2"
+          className={`rounded-xl border px-6 py-2.5 text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 ${
+            type === 'healing'
+              ? 'border-emerald-400/40 bg-emerald-400/20 text-emerald-100 hover:bg-emerald-400/30 shadow-sm shadow-emerald-500/20'
+              : 'border-teal-400/40 bg-teal-400/20 text-teal-100 hover:bg-teal-400/30'
+          }`}
         >
-          {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4 fill-teal-100" />}
-          <span>{isPlaying ? 'Pause Sound' : 'Play Ambient Waves'}</span>
+          {isPlaying ? (
+            <Pause className="h-4 w-4" />
+          ) : type === 'healing' ? (
+            <Music className="h-4 w-4 fill-emerald-100" />
+          ) : (
+            <Play className="h-4 w-4 fill-teal-100" />
+          )}
+          <span>
+            {isPlaying
+              ? 'Pause Music'
+              : type === 'healing'
+                ? 'Play Deep Healing Music'
+                : 'Play Ambient Waves'}
+          </span>
         </button>
       </div>
 
@@ -1676,7 +1757,20 @@ function toggleValue<T>(values: T[], value: T) {
   return values.includes(value) ? values.filter((item) => item !== value) : [...values, value]
 }
 
-function getContentIcon(type: ContentType) {
+function getContentIcon(
+  type: ContentType,
+  tags?: string[],
+  title?: string,
+  audioAmbientType?: string
+) {
+  if (
+    audioAmbientType === 'healing' ||
+    tags?.includes('music') ||
+    tags?.includes('healing') ||
+    title?.toLowerCase().includes('music')
+  ) {
+    return Music
+  }
   switch (type) {
     case 'article':
       return BookOpen

@@ -14,6 +14,7 @@ import {
   User,
   LogOut,
   ArrowUpRight,
+  Music,
 } from 'lucide-react'
 
 const tools = [
@@ -30,6 +31,13 @@ const tools = [
     href: '/mood',
     icon: LineChart,
     color: 'text-violet-400',
+  },
+  {
+    title: 'Deep Healing Music',
+    description: '432Hz ambient sound therapy and restorative harmonic frequencies',
+    href: '/recommendations?type=audio',
+    icon: Music,
+    color: 'text-emerald-400',
   },
   {
     title: 'Analytics',

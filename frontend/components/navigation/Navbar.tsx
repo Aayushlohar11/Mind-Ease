@@ -18,6 +18,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@frontend/components/ui/button'
 import { cn } from '@frontend/lib/utils'
+import { DeepHealingAudioButton } from '@frontend/components/audio/DeepHealingAudioButton'
 
 const publicLinks = [
   { href: '/#about', label: 'About' },
@@ -107,6 +108,7 @@ export function Navbar() {
 
         {/* Desktop Actions */}
         <div className="hidden md:flex items-center gap-3">
+          <DeepHealingAudioButton />
           {session ? (
             <>
               <span className="text-xs text-muted-foreground truncate max-w-[130px] font-mono">
@@ -147,6 +149,7 @@ export function Navbar() {
 
         {/* Mobile Hamburger Toggle */}
         <div className="flex md:hidden items-center gap-2">
+          <DeepHealingAudioButton compact />
           {session && (
             <span className="text-xs text-muted-foreground font-mono truncate max-w-[100px]">
               {session.user?.name?.split(' ')[0] || 'User'}
@@ -170,6 +173,12 @@ export function Navbar() {
       {/* Mobile Navigation Drawer / Dropdown */}
       {mobileMenuOpen && (
         <div className="md:hidden fixed inset-x-0 top-16 bg-background/95 backdrop-blur-2xl border-b border-white/10 shadow-2xl p-5 space-y-4 max-h-[calc(100vh-4rem)] overflow-y-auto glass-scrollbar animate-in slide-in-from-top-3 duration-200">
+          {/* Quick Ambient Music for Mobile */}
+          <div className="p-3 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-between">
+            <span className="text-xs text-muted-foreground">Deep Healing Music</span>
+            <DeepHealingAudioButton />
+          </div>
+
           <nav className="flex flex-col gap-1.5">
             {links.map((link) => {
               const active = isLinkActive(link)

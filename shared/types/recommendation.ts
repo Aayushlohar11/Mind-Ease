@@ -50,7 +50,7 @@ export interface Content {
   sections?: ContentSection[]
   journalPrompts?: string[]
   groundingSteps?: string[]
-  audioAmbientType?: 'ocean' | 'rain' | 'forest' | 'binaural'
+  audioAmbientType?: 'ocean' | 'rain' | 'forest' | 'binaural' | 'healing'
 }
 
 export interface ContentMetadata {

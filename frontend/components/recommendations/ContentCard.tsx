@@ -60,6 +60,14 @@ export function ContentCard({
   }
 
   const getTypeIcon = (type: string) => {
+    if (
+      content.audioAmbientType === 'healing' ||
+      content.tags?.includes('music') ||
+      content.tags?.includes('healing') ||
+      content.title?.toLowerCase().includes('music')
+    ) {
+      return '🎵'
+    }
     switch (type) {
       case 'article':
         return '📄'

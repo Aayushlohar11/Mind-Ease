@@ -96,6 +96,42 @@ const CONTENT_LIBRARY: Content[] = [
     updatedAt: new Date('2024-01-05'),
   },
   {
+    id: 'content-healing-music',
+    title: 'Deep Healing Music & 432Hz Sound Therapy',
+    description:
+      'Harmonic 432Hz ambient soundscape and restorative theta frequencies designed to release deep-seated stress, clear mental chatter, and restore emotional equilibrium.',
+    type: 'audio',
+    category: 'meditation',
+    tags: ['music', 'healing', '432hz', 'sound-therapy', 'relaxation', 'deep-rest', 'mindfulness'],
+    duration: 20,
+    difficulty: 'beginner',
+    targetMoods: ['anxious', 'stressed', 'tired', 'sad', 'neutral'],
+    targetCategories: ['anxious', 'negative', 'neutral'],
+    interactiveType: 'audio_session',
+    audioAmbientType: 'healing',
+    metadata: {
+      language: 'en',
+      rating: 4.95,
+      reviewCount: 3420,
+      completionRate: 0.94,
+      effectivenessScore: 0.96,
+    },
+    sections: [
+      {
+        heading: 'The Power of 432Hz Sound Therapy',
+        body: 'Known as the natural harmonic frequency, 432Hz tuning resonates with natural biological rhythms. Listening encourages heart rate coherence, releases nervous tension, and synchronizes brain hemispheres into restorative theta and alpha wave states.',
+        bulletPoints: [
+          'Listen with stereo headphones for optimal binaural immersion',
+          'Close your eyes and breathe gently in through your nose',
+          'Notice vibrations relaxing the space between your eyebrows',
+          'Ideal during meditation, bedtime preparation, or midday reset',
+        ],
+      },
+    ],
+    createdAt: new Date('2024-01-08'),
+    updatedAt: new Date('2024-01-08'),
+  },
+  {
     id: 'content-3',
     title: 'Understanding Depression: A Compassionate Guide',
     description:
