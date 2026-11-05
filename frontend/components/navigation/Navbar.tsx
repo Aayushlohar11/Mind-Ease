@@ -15,6 +15,7 @@ import {
   User,
   LogOut,
   Sparkles,
+  Music,
 } from 'lucide-react'
 import { Button } from '@frontend/components/ui/button'
 import { cn } from '@frontend/lib/utils'
@@ -30,6 +31,7 @@ const appLinks = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/chat', label: 'Chat', icon: MessageCircle },
   { href: '/mood', label: 'Mood', icon: LineChart },
+  { href: '/healing-music', label: 'Music', icon: Music },
   { href: '/analytics', label: 'Analytics', icon: BarChart3 },
   { href: '/recommendations', label: 'Resources', icon: BookOpen, aliases: ['/resources'] },
   { href: '/profile', label: 'Profile', icon: User },

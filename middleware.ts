@@ -15,6 +15,7 @@ const protectedRoutes = [
   '/mood',
   '/analytics',
   '/recommendations',
+  '/healing-music',
 ]
 
 // Routes that should redirect to dashboard if already authenticated

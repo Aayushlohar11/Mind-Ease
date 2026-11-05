@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { Button } from '@frontend/components/ui/button'
 import {
   ArrowLeft,
   BarChart3,
@@ -880,12 +882,26 @@ function InteractiveResourceModal({
             )}
 
             {content.interactiveType === 'audio_session' && (
-              <AmbientSoundStudio
-                type={content.audioAmbientType || 'ocean'}
-                durationMinutes={content.duration || 15}
-                title={content.title}
-                onFinish={onComplete}
-              />
+              <div className="space-y-4">
+                <AmbientSoundStudio
+                  type={content.audioAmbientType || 'ocean'}
+                  durationMinutes={content.duration || 15}
+                  title={content.title}
+                  onFinish={onComplete}
+                />
+                <div className="flex justify-center pt-1">
+                  <Link href="/healing-music">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="gap-2 border-emerald-400/40 text-emerald-300 hover:bg-emerald-400/10 text-xs"
+                    >
+                      <Music className="h-3.5 w-3.5" />
+                      Open Full 432Hz Healing Music Studio
+                    </Button>
+                  </Link>
+                </div>
+              </div>
             )}
 
             {content.interactiveType === 'video_player' && (

@@ -35,7 +35,7 @@ const tools = [
   {
     title: 'Deep Healing Music',
     description: '432Hz ambient sound therapy and restorative harmonic frequencies',
-    href: '/recommendations?type=audio',
+    href: '/healing-music',
     icon: Music,
     color: 'text-emerald-400',
   },
